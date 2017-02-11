@@ -10,7 +10,12 @@ general:
 # We use Node 6 baby.
 machine:
   node:
-    version: 0.11.8
+    version: 6
+
+# Ummm, Yarn please?
+dependencies:
+  override:
+    - yarn
 
 # Our tests are run by the makefile.
 test:
