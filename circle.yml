@@ -3,7 +3,9 @@
 
 # We are using the react_native_app directory.
 general:
-  build_dir: api
+  build_dir: react_native_app
+  artifacts:
+    - ./artifacts
 
 # We use Node 6 baby.
 machine:
