@@ -20,4 +20,5 @@ dependencies:
 # Our tests are run by the makefile.
 test:
   override:
+    - make build
     - make test
