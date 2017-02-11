@@ -6,7 +6,7 @@ Each project demonstrates the same fundamental techniques, applied to a differen
 
 | Sample | App Technology | App Distribution Technology | CI/CD Provider |
 |--------|----------------|-----------------------------|----------------|
-| [`react-native`](./react-native) | [React Native](https://facebook.github.io/react-native/) | [TestFairy](https://testfairy.com/) | [CircleCI](https://circleci.com/) |
+| [`react-native`](./react-native) | [React Native](https://facebook.github.io/react-native/) | [TestFairy](https://testfairy.com/) | [CircleCI](https://circleci.com/) [![CircleCI](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci.svg?style=svg)](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci) |
 
 ## The React Native App
 

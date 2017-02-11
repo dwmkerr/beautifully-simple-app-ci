@@ -1,4 +1,4 @@
-# react-native-app
+# react-native-app [![CircleCI](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci.svg?style=svg)](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci)
 
 This app is a demo of the beautifully simple CI/CD process mentioned [here](../README.md).
 
