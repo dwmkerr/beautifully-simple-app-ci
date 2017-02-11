@@ -1,0 +1,16 @@
+# This is the CircleCI configuration for the react_native_app project, which
+# unfortunately is forced to be in the root.
+
+# We are using the react_native_app directory.
+general:
+  build_dir: api
+
+# We use Node 6 baby.
+machine:
+  node:
+    version: 0.11.8
+
+# Our tests are run by the makefile.
+test:
+  override:
+    - make test
