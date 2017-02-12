@@ -4,9 +4,9 @@ This repository demonstrates some beautifully simple techniques for handling CI 
 
 Each project demonstrates the same fundamental techniques, applied to a different combination of technologies and CI/CD providers. Each pipeline can be run locally with ease.
 
-| Sample | App Technology | App Distribution Technology | CI/CD Provider |
-|--------|----------------|-----------------------------|----------------|
-| [`react-native`](./react-native) | [React Native](https://facebook.github.io/react-native/) | [TestFairy](https://testfairy.com/) | [CircleCI](https://circleci.com/) [![CircleCI](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci.svg?style=svg)](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci) |
+| Sample | App Technology | App Distribution Technology | CI/CD Provider | Status |
+|--------|----------------|-----------------------------|----------------|--------|
+| [`react-native`](./react-native) | [React Native](https://facebook.github.io/react-native/) | [TestFairy](https://testfairy.com/) | [CircleCI](https://circleci.com/) [![CircleCI](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci.svg?style=svg)](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci) | ❗ Android Mac Local ❗ iOS Mac Local ❗ Android CI ❗ iOS CI |
 
 ## The React Native App
 

@@ -13,12 +13,21 @@ To build the artifacts, you will need:
 - Yarn
 - Fastlane Gym
 
+```bash
+brew update
+brew cask install fastlane
+brew upgrade openssl
+```
+
 You will also need to configure some environment variables. Put the followining in your `.bashrc` or `.zshrc`:
 
 ```bash
 export REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD=p@ssw0rd
 export REACT_NATIVE_APP_CODESIGN_IDENTITY="iPhone Distribution: Dave Kerr (JY89C5JVZX)"
 ```
+
+| Environment Variable | Usage |
+|----------------------|-------|
 
 ## Initial Setup
 

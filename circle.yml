@@ -13,11 +13,13 @@ machine:
     version: 6
   environment:
     REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD: p@ssw0rd 
+    # Lots of memory for gradle...
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
 # Setup Android tools and Yarn.
 dependencies:
   pre:
-    - echo y | android update sdk --no-ui --all --filter "tools"
+    # - echo y | android update sdk --no-ui --all --filter "tools"
     - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.1"
   cache_directories:
     # Cache Android SDK depenendcies.
