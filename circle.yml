@@ -12,7 +12,7 @@ machine:
   node:
     version: 6
   environment:
-    REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD: p@ssw0rd 
+    REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD: p@ssw0rd
     # Ensure we set up the build memory options properly...
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
@@ -42,4 +42,4 @@ deployment:
   master:
     branch: [master]
     commands:
-      - make deploy
+      - make deploy-android
