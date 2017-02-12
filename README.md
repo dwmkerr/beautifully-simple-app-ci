@@ -15,7 +15,7 @@ The React Native app was set up using `react-native init` (see the [React Native
 The only adaptations are:
 
 1. The addition of a single, simple icon file.
-2. Incorportation of CircleCI.
+2. Incorporation of CircleCI.
 3. Setup of TestFairy.
 4. Orchestration of the CI/CD via the `makefile`.
 
