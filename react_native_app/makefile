@@ -26,7 +26,10 @@ build-ios:
 	cd ./ios; fastlane gym --scheme "react_native_app" --codesigning_identity "$(REACT_NATIVE_APP_CODESIGN_IDENTITY)" --use_legacy_build_api
 
 # Deploys the apps to TestFairy.
-deploy-android:
+deploy:
+ifndef TESTFAIRY_API_KEY
+	$(error No TESTFAIRY_API_KEY is set, cannot deploy to TestFairy.)
+endif
 	# Push the build to TestFairy.
 	curl https://app.testfairy.com/api/upload \
 		-F api_key='$(TESTFAIRY_API_KEY)' \
