@@ -12,6 +12,7 @@ To build the artifacts, you will need:
 - Node 6
 - Yarn
 - Fastlane Gym
+- React Native CLI
 
 ```bash
 brew update

@@ -22,6 +22,7 @@ dependencies:
   pre:
     # - echo y | android update sdk --no-ui --all --filter "tools"
     - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.1"
+    - cd android; gradle --refresh-dependencies assembleRelease
   cache_directories:
     # Cache Android SDK depenendcies.
     - /usr/local/android-sdk-linux/tools
