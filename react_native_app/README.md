@@ -29,6 +29,21 @@ export REACT_NATIVE_APP_CODESIGN_IDENTITY="iPhone Distribution: Dave Kerr (JY89C
 
 | Environment Variable | Usage |
 |----------------------|-------|
+| `REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
+| `TESTFAIRY_API_KEY` | The API key to push to TestFairy. If included, `make deploy` will push the app to TestFairy. If not, the deploy will fail. |
+
+## Key Commands
+
+The following commands are useful when working with the project.
+
+| Command | Usage |
+|---------|-------|
+| `make test` | Runs all of the tests for the project. |
+| `make build` | Creates the IPA and APK binaries and saves them in the `./artifacts` folder. |
+| `make deploy` | Pushes the binaries to TestFairy. |
+|---------|-------|
+| `react-native run-ios` | Runs the app in the iOS emulator. |
+| `react-native run-android` | Runs the app in the Android emulator. The emulator must first be running. |
 
 ## Initial Setup
 

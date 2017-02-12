@@ -38,8 +38,8 @@ test:
     - make test
 
 # Deploy the master branch.
-# deploy:
-#  master:
-#    branch: [master]
-#   commands:
-#     - make deploy-android
+deploy:
+  master:
+    branch: [master]
+    commands:
+      - make deploy
