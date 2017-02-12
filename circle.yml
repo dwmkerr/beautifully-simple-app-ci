@@ -11,6 +11,8 @@ general:
 machine:
   node:
     version: 6
+  environment:
+    REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD: p@ssw0rd 
 
 # Ummm, Yarn please?
 dependencies:

@@ -2,6 +2,22 @@
 
 This app is a demo of the beautifully simple CI/CD process mentioned [here](../README.md).
 
+## Setup
+
+To build the artifacts, you will need:
+
+- XCode 6
+- Android Studio (with the `ANDROID_HOME` environment variable set)
+- The Android 23.0.1 SDK and Build Tools
+- Node 6
+- Yarn
+
+You will also need to configure some environment variables. Put the followining in your `.bashrc` or `.zshrc`:
+
+```bash
+export REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD=p@ssw0rd
+```
+
 ## Initial Setup
 
 The project has been setup like this:

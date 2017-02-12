@@ -23,3 +23,4 @@ The only adaptations are:
 
 1. Avoid complex or unnecessary CI/CD tool features. For example, CicleCI can offer Git SHAs via an environment variable, but you can easily grab a SHA with `git info`, so keep things generic.
 2. If you DO need a feature, try and keep it out of the makefile. For example, if you need a circle environment variable, pass it via another, generically named environment variable.
+3. Any configuration of secrets and special varaibles should be in environment variables. Avoid using 'custom' locations like a `gradle.properties` file, just use profile files. Ensure they are documented.
