@@ -12,7 +12,10 @@ build-android:
 
 # Builds the IPA to the artifacts folder.
 build-ios:
-	$(warning Work in progress)
+	react-native bundle --dev false --entry-file index.ios.js --bundle-output ios/main.jsbundle --platform ios
+	cd ./ios; gym --scheme "react_native_app" --codesigning_identity "$(REACT_NATIVE_APP_CODESIGN_IDENTITY)" --use_legacy_build_api
+
+
 
 # Builds the app binaries to the artifacts folder.
 build: build-android build-ios

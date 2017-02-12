@@ -11,11 +11,13 @@ To build the artifacts, you will need:
 - The Android 23.0.1 SDK and Build Tools
 - Node 6
 - Yarn
+- Fastlane Gym
 
 You will also need to configure some environment variables. Put the followining in your `.bashrc` or `.zshrc`:
 
 ```bash
 export REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD=p@ssw0rd
+export REACT_NATIVE_APP_CODESIGN_IDENTITY="iPhone Distribution: Dave Kerr (JY89C5JVZX)"
 ```
 
 ## Initial Setup
@@ -28,6 +30,10 @@ The project has been setup like this:
 4. Create a simple [`icon.png`](./icon.png) and generate all sizes with [`react-native-icon`](https://github.com/dwmkerr/react-native-icon).
 5. An Android Keystore was created with `keytool -genkey -v -keystore ./android/keystores/app.keystore -alias app -keyalg RSA -keysize 2048 -validity 10000`. The password `p@ssw0rd` was used for both the keysore and app. The passwords were added to the environment variables `REACT_NATIVE_APP_RELEASE_STORE_PASSWORD` and `REACT_NATIVE_APP_RELEASE_KEY_PASSWORD`.
 6. The `build.gradle` was updated as per the [React Native - Generating Signed APK](http://facebook.github.io/react-native/releases/0.19/docs/signed-apk-android.html#content) guide.
+
+### Setup for Building an IPA
+
+The basic steps come from: https://facebook.github.io/react-native/releases/0.31/docs/running-on-device-ios.html
 
 ## Testing
 
