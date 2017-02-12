@@ -25,11 +25,12 @@ build-ios:
 	react-native bundle --dev false --entry-file index.ios.js --bundle-output ios/main.jsbundle --platform ios
 	cd ./ios; fastlane gym --scheme "react_native_app" --codesigning_identity "$(REACT_NATIVE_APP_CODESIGN_IDENTITY)" --use_legacy_build_api
 
-
-
-# Builds the app binaries to the artifacts folder.
-build: build-android build-ios
-
 # Deploys the apps to TestFairy.
-deploy:
-	$(error Not implmented)
+deploy-android:
+	# Push the build to TestFairy.
+	curl https://app.testfairy.com/api/upload \
+		-F api_key='$(TESTFAIRY_API_KEY)' \
+		-F "file=@./artifacts/app-release.apk" \
+		-F auto-update='on' \
+		-F metrics='cpu,network,logcat' \
+		-F options='shake'

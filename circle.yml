@@ -34,5 +34,12 @@ dependencies:
 # Our tests are run by the makefile.
 test:
   override:
-    - make build
+    - make build-android
     - make test
+
+# Deploy the master branch.
+# deploy:
+#  master:
+#    branch: [master]
+#   commands:
+#     - make deploy-android
