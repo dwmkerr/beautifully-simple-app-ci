@@ -13,8 +13,9 @@ machine:
     version: 6
   environment:
     REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD: p@ssw0rd 
-    # Lots of memory for gradle...
+    # Ensure we set up the build memory options properly...
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
 
 # Setup Android tools and Yarn.
 dependencies:
