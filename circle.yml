@@ -38,7 +38,7 @@ test:
     - make test
 
 # Deploy the master branch.
-deploy:
+deployment:
   master:
     branch: [master]
     commands:
