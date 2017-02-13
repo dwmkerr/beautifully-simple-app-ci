@@ -5,7 +5,7 @@ This repository demonstrates some beautifully simple techniques for handling CI 
 
 | Sample | App Technology | CI/CD Provider| App Distribution Technology  | Status |
 |--------|----------------|---------------|_-----------------------------|--------|
-| [`react_native_app`](./react_native_app) | [React Native](https://facebook.github.io/react-native/) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ❗ iOS Mac Local ✅ Android CI ❗ iOS CI |
+| [`react_native_app`](./react_native_app) | [React Native](https://facebook.github.io/react-native/) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ✅ iOS Mac Local ✅ Android CI ❗ iOS CI |
 
 ## Principles to Follow
 

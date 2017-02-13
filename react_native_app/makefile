@@ -43,7 +43,7 @@ endif
 	# Push the build to TestFairy.
 	curl https://app.testfairy.com/api/upload \
 		-F api_key='$(TESTFAIRY_API_KEY)' \
-		-F "file=@./artifacts/react_native_app.apk" \
+		-F "file=@./artifacts/react_native_app.ipa" \
 		-F auto-update='on' \
 		-F metrics='cpu,network,logcat' \
 		-F options='shake'

@@ -1,36 +1,6 @@
 # react-native-app [![CircleCI](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci.svg?style=svg)](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci)
 
-This app is a demo of the beautifully simple CI/CD process mentioned [here](../README.md).
-
-## Setup
-
-To build the artifacts, you will need:
-
-- XCode 6
-- Android Studio (with the `ANDROID_HOME` environment variable set)
-- The Android 23.0.1 SDK and Build Tools
-- Node 6
-- Yarn
-- Fastlane Gym
-- React Native CLI
-
-```bash
-brew update
-brew cask install fastlane
-brew upgrade openssl
-```
-
-You will also need to configure some environment variables. Put the followining in your `.profile`, `.bashrc` or `.zshrc`:
-
-| Environment Variable | Usage |
-|----------------------|-------|
-| `RNA_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
-| `RNA_CODE_SIGNING_IDENTITY` | The name of your Code Signing Identity (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
-| `TESTFAIRY_API_KEY` | The API key to push to TestFairy. If included, `make deploy` will push the app to TestFairy. If not, the deploy will not proceed. |
-
-## Key Commands
-
-The following commands are useful when working with the project.
+This app is a demo of the beautifully simple CI/CD process mentioned [here](../README.md). When you have followed the [Setup](#setup) steps, you can use the commands below to work with the project:
 
 | Command | Usage |
 |---------|-------|
@@ -41,20 +11,34 @@ The following commands are useful when working with the project.
 | `react-native run-ios` | Runs the app in the iOS emulator. |
 | `react-native run-android` | Runs the app in the Android emulator. The emulator must first be running. |
 
-## Initial Setup
+## Setup Guide
 
-The project has been setup like this:
+Ensure the follow tools are installed:
 
-1. Update to XCode 8, installing all commandline tools.
-2. Install Android Studio, add `ANDROID_HOME` to the environment variables.
-3. Setup the projet with `react-native init react_native_app`.
-4. Create a simple [`icon.png`](./icon.png) and generate all sizes with [`react-native-icon`](https://github.com/dwmkerr/react-native-icon).
-5. An Android Keystore was created with `keytool -genkey -v -keystore ./android/keystores/app.keystore -alias app -keyalg RSA -keysize 2048 -validity 10000`. The password `p@ssw0rd` was used for both the keysore and app. The passwords were added to the environment variables `REACT_NATIVE_APP_RELEASE_STORE_PASSWORD` and `REACT_NATIVE_APP_RELEASE_KEY_PASSWORD`.
-6. The `build.gradle` was updated as per the [React Native - Generating Signed APK](http://facebook.github.io/react-native/releases/0.19/docs/signed-apk-android.html#content) guide.
+| Tool | Notes |
+|------|-------|
+| XCode | Version 8, with the XCode commandline tools, `xcode-select --install`. |
+| Android Studio | Ensure the `ANDROID_HOME` environment variable is set and that the 23.0.1 SDK and build tools are installed. |
+| Node 6 | Preferrably installed and managed with [NVM](https://github.com/creationix/nvm). |
+| Yarn | `npm install -g yarn` |
+| Fastlane | `brew cask install fastlane` |
+| React Native CLI | `npm install -g react-native-cli` |
+
+If you want to be able to build and deploy to actual iOS devices, please follow the [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing) guide before continuing to the next step.
+
+You will also need to configure some environment variables. Put the followining in your `.profile`, `.bashrc` or `.zshrc`:
+
+| Environment Variable | Usage |
+|----------------------|-------|
+| `RNA_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
+| `RNA_CODE_SIGNING_IDENTITY` | The name of your Code Signing Identity (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
+| `TESTFAIRY_API_KEY` | The API key to push to TestFairy. If included, `make deploy` will push the app to TestFairy. If not, the deploy will not proceed. |
 
 ## Setting up iOS Code Signing
 
-Apple make this hard. From the `./react_native_app` directory, run the following commands:
+You will only be able to setup iOS Code Signing if you have enrolled in the [Apple Developer Program](https://developer.apple.com/programs/). If you have, follow the steps below.
+
+From the `./react_native_app` directory, run the following commands:
 
 ```bash
 mkdir ios/certificates
@@ -102,3 +86,14 @@ Useful references:
 
 - https://circleci.com/docs/ios-code-signing/
 - https://facebook.github.io/react-native/releases/0.31/docs/running-on-device-ios.html
+
+## Appendix 1: Initial Setup
+
+The project was intially setup like this:
+
+1. Update to XCode 8, installing all commandline tools.
+2. Install Android Studio, add `ANDROID_HOME` to the environment variables.
+3. Setup the projet with `react-native init react_native_app`.
+4. Create a simple [`icon.png`](./icon.png) and generate all sizes with [`react-native-icon`](https://github.com/dwmkerr/react-native-icon).
+5. An Android Keystore was created with `keytool -genkey -v -keystore ./android/keystores/app.keystore -alias app -keyalg RSA -keysize 2048 -validity 10000`. The password `p@ssw0rd` was used for both the keysore and app. The passwords were added to the environment variables `REACT_NATIVE_APP_RELEASE_STORE_PASSWORD` and `REACT_NATIVE_APP_RELEASE_KEY_PASSWORD`.
+6. The `build.gradle` was updated as per the [React Native - Generating Signed APK](http://facebook.github.io/react-native/releases/0.19/docs/signed-apk-android.html#content) guide.
