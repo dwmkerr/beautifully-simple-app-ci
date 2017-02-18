@@ -24,7 +24,7 @@ Ensure the follow tools are installed:
 | Fastlane | `brew cask install fastlane` |
 | React Native CLI | `npm install -g react-native-cli` |
 
-If you want to be able to build and deploy to actual iOS devices, please follow the [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing) guide before continuing to the next step.
+If you want to be able to build and deploy to actual iOS devices, please follow the [Setting up iOS Code Signing](#setting-up-ios-code-signing) guide before continuing to the next step.
 
 You will also need to configure some environment variables. Put the followining in your `.profile`, `.bashrc` or `.zshrc`:
 

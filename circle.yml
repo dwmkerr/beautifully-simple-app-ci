@@ -3,7 +3,7 @@
 
 # We are using the react_native_app directory.
 general:
-  build_dir: react_native_app
+  build_dir: 1_react_native_app
   artifacts:
     - ./artifacts
 
