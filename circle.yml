@@ -20,9 +20,10 @@ machine:
 # Setup Android tools and Yarn.
 dependencies:
   pre:
-    # - echo y | android update sdk --no-ui --all --filter "tools"
     - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.1"
-    - cd android; ./gradlew --refresh-dependencies assembleRelease
+    # You *might* be able to squeeze out faster builds by forcing a dependency
+    # refresh and caching the output. Uncomment the below to try.
+    # - cd android; ./gradlew --refresh-dependencies assembleRelease
   cache_directories:
     # Cache Android SDK and android depenendcies.
     - /usr/local/android-sdk-linux/tools
