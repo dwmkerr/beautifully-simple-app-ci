@@ -107,9 +107,9 @@ android {
     signingConfigs {
         release {
             storeFile file("../app.keystore")
-            storePassword System.getenv("REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD")
+            storePassword System.getenv("RNA_KEYSTORE_PASSWORD")
             keyAlias "app"
-            keyPassword System.getenv("REACT_NATIVE_APP_RELEASE_KEYSTORE_PASSWORD")
+            keyPassword System.getenv("RNA_KEYSTORE_PASSWORD")
         }
     }
     buildTypes {
