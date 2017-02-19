@@ -16,7 +16,8 @@ touch:
 
 # Tests the code.
 test:
-	npm run test
+	$(warning No tests so far, do not forget to add some in the future.)
+	@echo 0
 
 # Creates the Android APK.
 build-android:
