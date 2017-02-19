@@ -1,6 +1,6 @@
 # Use the Trusty distro.
 sudo: required
-dist: trusty
+dist: precise
 
 # Configure for Android.
 language: android
