@@ -4,14 +4,12 @@ android:
     - build-tools-19.1.0
     - android-23
 before_install:
+  - cd 2_ionic_app
   - nvm install 6
   - sudo apt-get install jq
   - npm install -g npm cordova ionic
-  - cd 2_ionic_app
 install:
   - npm install
-before_script:
-  - cd 2_ionic_app
 script:
   - make test
   - make build-android
