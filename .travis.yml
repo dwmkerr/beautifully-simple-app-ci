@@ -29,5 +29,13 @@ install:
 
 # Run the Android build.
 script:
+  - make touch
   - make test
   - make build-android
+
+# Deploy master.
+deploy:
+  provider: script
+  script: make deploy-android
+  on:
+    branch: develop

@@ -33,15 +33,17 @@ endif
 		-storepass $(IA_KEYSTORE_PASSWORD) -keypass $(IA_KEYSTORE_PASSWORD) \
 			"./artifacts/ionic_app.apk" ionic_app
 
-deploy-android: bump build-js build-android
-	# Push the build to TestFairy.
-	curl https://app.testfairy.com/api/upload \
-		-F api_key='$(TESTFAIRY_API_KEY)' \
-		-F "file=@artifacts/ionic_app.apk" \
-		-F auto-update='on' \
-		-F metrics='cpu,network,logcat' \
-		-F options='shake'
-
+deploy-android: touch build-android
+ifndef IA_HOCKEYAPP_TOKEN
+	$(error No IA_HOCKEYAPP_TOKEN is set, cannot deploy to HockeyApp.)
+endif
+	curl https://rink.hockeyapp.net/api/2/apps/upload \
+    -F "status=2" \
+    -F "notify=1" \
+	  -F "bundle_short_version=$(VERSION)" \
+	  -F "bundle_version=$(BUILD_NUM)" \
+    -F "ipa=@./artifacts/ionic_app.apk" \
+    -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
 
 # Creates the iOS IPA.
 build-ios:

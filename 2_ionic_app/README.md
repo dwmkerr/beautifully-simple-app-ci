@@ -33,6 +33,7 @@ You will also need to configure some environment variables. Put the followining 
 |----------------------|-------|
 | `IA_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
 | `IA_CODE_SIGNING_IDENTITY` | The name of your Code Signing Identity (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
+| `IA_HOCKEYAPP_TOKEN` | Your API token for uploading to [HockeyApp](https://www.hockeyapp.net). |
 
 ## Setting up iOS Code Signing
 
