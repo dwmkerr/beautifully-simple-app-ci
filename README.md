@@ -5,7 +5,7 @@ This repository demonstrates some beautifully simple techniques for handling CI 
 | Sample | CI/CD Provider| App Distribution Technology  | Status |
 |--------|---------------|------------------------------|--------|
 | ![React Native Icon](./article/icon_react_native.png) [React Native App](./1_react_native_app) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ✅ iOS Mac Local ✅ Android CI ❗ iOS CI |
-| ![Ionic Icon](./article/icon_react.png) [Ionic 2 Hybrid App](./2_ionic_app) | [TravisCI](https://travis-ci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ❗ iOS Mac Local ✅ Android CI ❗ iOS CI |
+| ![Ionic Icon](./article/icon_ionic.png) [Ionic 2 Hybrid App](./2_ionic_app) | [TravisCI](https://travis-ci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ❗ iOS Mac Local ✅ Android CI ❗ iOS CI |
 
 ## Principles to Follow
 
