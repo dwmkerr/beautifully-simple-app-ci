@@ -14,6 +14,11 @@ touch:
 	sed -i "" -e 's/ios-CFBundleVersion=\"[0-9]*\"/ios-CFBundleVersion=\"$(BUILD_NUM)\"/g' ./config.xml
 	sed -i "" -e 's/version=\"[.0-9a-zA-Z]*\"/version=\"$(VERSION)"/g' ./config.xml
 
+# Tests the code.
+test:
+	npm run test
+
+# Creates the Android APK.
 build-android:
 ifndef IA_KEYSTORE_PASSWORD
 	$(error No IA_KEYSTORE_PASSWORD is set, cannot build APK.)
