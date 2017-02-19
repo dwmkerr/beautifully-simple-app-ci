@@ -1,16 +1,10 @@
-# ionic_app [![Build Status](https://travis-ci.org/dwmkerr/beautifully-simple-app-ci.svg?branch=master)](https://travis-ci.org/dwmkerr/beautifully-simple-app-ci)
+# 3_native_app
 
 This app is a demo of the beautifully simple CI/CD process mentioned [here](../README.md). When you have followed the [Setup](#setup) steps, you can use the commands below to work with the project:
 
 | Command | Usage |
 |---------|-------|
-| `make test` | Runs all of the tests for the project. |
 | `make build` | Creates the IPA and APK binaries and saves them in the `./artifacts` folder. |
-| `make deploy` | Pushes the binaries to TestFairy. |
-| - | - |
-| `ionic serve` | Runs the app in a browser locally. |
-| `ionic run android` | Runs the app in the Android emulator. |
-| `ionic run ios` | Runs the app in the iOS emulator. |
 
 ## Setup Guide
 
@@ -20,10 +14,7 @@ Ensure the follow tools are installed:
 |------|-------|
 | XCode | Version 8, with the XCode commandline tools, `xcode-select --install`. |
 | Android Studio | Ensure the `ANDROID_HOME` environment variable is set and that the 23.0.1 SDK and build tools are installed. |
-| Node 6 | Preferrably installed and managed with [NVM](https://github.com/creationix/nvm). |
 | Fastlane | `brew cask install fastlane` |
-| Cordova and the Ionic CLI | `npm install -g cordova ionic` |
-| JQ | `brew install jq` |
 
 If you want to be able to build and deploy to actual iOS devices, please follow the [Setting up iOS Code Signing](#setting-up-ios-code-signing) guide before continuing to the next step.
 
@@ -31,8 +22,8 @@ You will also need to configure some environment variables. Put the followining 
 
 | Environment Variable | Usage |
 |----------------------|-------|
-| `IA_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
-| `IA_CODE_SIGNING_IDENTITY` | The name of your Code Signing Identity (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
+| `NA_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
+| `NA_CODE_SIGNING_IDENTITY` | The name of your Code Signing Identity (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
 
 ## Setting up iOS Code Signing
 
