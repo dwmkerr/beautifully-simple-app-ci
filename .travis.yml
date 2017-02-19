@@ -38,4 +38,4 @@ deploy:
   provider: script
   script: make deploy-android
   on:
-    branch: develop
+    branch: master
