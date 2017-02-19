@@ -4,10 +4,19 @@ dist: precise
 
 # Configure for Android.
 language: android
+jdk: oraclejdk8
 android:
   components:
-    - build-tools-19.1.0
-    - android-23
+  - tools
+  - extra-android-m2repository
+  - extra-google-m2repository
+  - extra-google-google_play_services
+  - build-tools-19.1.0
+  - android-23
+  - build-tools-24.0.2
+  - android-24
+  licenses:
+  - android-sdk-license-.+
 
 # Setup dependencies.
 before_install:
