@@ -4,6 +4,7 @@ android:
     - build-tools-19.1.0
     - android-23
 before_install:
+  - nvm install 6
   - sudo apt-get install jq
   - npm install -g npm cordova ionic
 install:
