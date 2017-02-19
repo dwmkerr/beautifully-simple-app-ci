@@ -1,10 +1,13 @@
 language: objective-c
-os: osx  
+os: osx
 osx_image: xcode8
 before_install:
   - brew update
   - brew install jq
   - npm install -g npm cordova ionic
+install:
+  - cd 2_ionic_app
+  - npm install
 script:
   - cd 2_ionic_app
   - make test
