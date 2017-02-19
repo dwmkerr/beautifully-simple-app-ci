@@ -3,13 +3,11 @@
 VERSION ?= $(shell cat package.json | jq --raw-output .version)
 BUILD_NUM ?= 0
 
-debug:
-	echo "version $(VERSION)"
-
 # Touch will ensure that all version numbers are consistent, based on the
 # package.json version.
 touch:
   # Set the version and build number in the config file.
+	$(info "Touching to version $(VERSION) and build number $(BUILD_NUM).")
 	sed -i "" -e 's/android-versionCode=\"[0-9]*\"/android-versionCode=\"$(BUILD_NUM)\"/g' ./config.xml
 	sed -i "" -e 's/ios-CFBundleVersion=\"[0-9]*\"/ios-CFBundleVersion=\"$(BUILD_NUM)\"/g' ./config.xml
 	sed -i "" -e 's/version=\"[.0-9a-zA-Z]*\"/version=\"$(VERSION)"/g' ./config.xml

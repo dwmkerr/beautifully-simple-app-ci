@@ -5,6 +5,8 @@ dist: precise
 # Configure for Android.
 language: android
 jdk: oraclejdk8
+env:
+  - BUILD_NUM=$TRAVIS_BUILD_NUMBER
 android:
   components:
     - tools
