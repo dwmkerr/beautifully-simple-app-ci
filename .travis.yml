@@ -5,7 +5,8 @@ sudo: false
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+      - oracle-java8-installer    # JDK 1.8
+      - jq                        # JSON Query
 
 # Configure for Android.
 language: android
@@ -18,7 +19,6 @@ android:
 before_install:
   - cd 2_ionic_app
   - nvm install 6
-  - sudo apt-get install jq
   - npm install -g npm cordova ionic
 install:
   - npm install
