@@ -1,4 +1,4 @@
-# ionic_app
+# ionic_app [![Build Status](https://travis-ci.org/dwmkerr/beautifully-simple-app-ci.svg?branch=master)](https://travis-ci.org/dwmkerr/beautifully-simple-app-ci)
 
 This app is a demo of the beautifully simple CI/CD process mentioned [here](../README.md). When you have followed the [Setup](#setup) steps, you can use the commands below to work with the project:
 

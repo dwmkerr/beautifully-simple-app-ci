@@ -2,9 +2,10 @@
 
 This repository demonstrates some beautifully simple techniques for handling CI and CI for mobile apps. Each sample project demonstrates the same fundamental techniques, applied to a different combination of technologies and CI/CD providers. Each pipeline can be run locally with ease.
 
-| Sample | App Technology | CI/CD Provider| App Distribution Technology  | Status |
-|--------|----------------|---------------|------------------------------|--------|
-| ![React Native Icon](./article/icon_react_native.png) [`1_react_native_app`](./1_react_native_app) | [React Native](https://facebook.github.io/react-native/) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ✅ iOS Mac Local ✅ Android CI ❗ iOS CI |
+| Sample | CI/CD Provider| App Distribution Technology  | Status |
+|--------|---------------|------------------------------|--------|
+| ![React Native Icon](./article/icon_react_native.png) [React Native App](./1_react_native_app) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ✅ iOS Mac Local ✅ Android CI ❗ iOS CI |
+| ![React Native Icon](./article/icon_react_native.png) [Ionic 2 Hybrid App](./2_ionic_app) | [TravisCI](https://travis-ci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ❗ iOS Mac Local ✅ Android CI ❗ iOS CI |
 
 ## Principles to Follow
 
