@@ -25,9 +25,9 @@ ifndef IA_KEYSTORE_PASSWORD
 	$(error No IA_KEYSTORE_PASSWORD is set, cannot build APK.)
 endif
 	# Recreate the Android platform.
-	npm run ionic:build
 	rm -rf ./platforms/android
 	cordova platform add android
+	npm run ionic:build
 	cordova build android --release
 	cp platforms/android/build/outputs/apk/*.apk ./artifacts/ionic_app.apk
 	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
@@ -43,3 +43,18 @@ deploy-android: bump build-js build-android
 		-F auto-update='on' \
 		-F metrics='cpu,network,logcat' \
 		-F options='shake'
+
+
+# Creates the iOS IPA.
+build-ios:
+ifndef IA_CODE_SIGNING_IDENTITY
+	$(error No IA_CODE_SIGNING_IDENTITY is set, cannot build IPA.)
+endif
+	# Recreate the iOS platform.
+	rm -rf ./platforms/ios
+	cordova platform add ios
+	npm run ionic:build
+	cordova prepare ios --release
+	cd ./platforms/ios; fastlane gym --scheme "ionic_app" \
+		--use_legacy_build_api \
+		--codesigning_identity "$(RNA_CODE_SIGNING_IDENTITY)"; cd ../..;
