@@ -7,10 +7,11 @@ before_install:
   - nvm install 6
   - sudo apt-get install jq
   - npm install -g npm cordova ionic
+  - cd 2_ionic_app
 install:
-  - cd 2_ionic_app
   - npm install
-script:
+before_script:
   - cd 2_ionic_app
+script:
   - make test
   - make build-android
