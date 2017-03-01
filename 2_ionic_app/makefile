@@ -75,3 +75,5 @@ endif
 	-F "bundle_version=$(BUILD_NUM)" \
     -F "ipa=@./artifacts/ionic_app.ipa" \
     -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
+
+deploy: deploy-android deploy-ios
