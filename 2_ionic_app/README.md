@@ -5,6 +5,7 @@ This app is a demo of the beautifully simple CI/CD process mentioned [here](../R
 | Command | Usage |
 |---------|-------|
 | `make test` | Runs all of the tests for the project. |
+| `make touch` | Updates the version numbers across the project to match those in the `package.json`. Run before `make build`. |
 | `make build` | Creates the IPA and APK binaries and saves them in the `./artifacts` folder. |
 | `make deploy` | Pushes the binaries to HockeyApp. |
 | - | - |

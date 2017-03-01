@@ -170,7 +170,21 @@ A working example is available at:
 
 [github.com/dwmkerr/beautifully-simple-app-ci/2_ionic_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/2_ionic_app)
 
-This sample will always set the build number 
+This sample will always set the build number in both apps and the build version to whatever is present in the `package.json` file. That means you can do awesomeness like this:
+
+```
+$ npm version minor              # Bump the version
+v0.1.0
+$ BUILD_NUM=3 make deploy        # Push the code
+...
+done
+```
+
+And all of the version numbers and build numbers are updated and the apps are deployed. In this example project, they're deployed to HockeyApp:
+
+![Screenshot of the newly versioned apps in HockeyApp](/content/images/2017/03/6-hockey-app.png)
+
+This build also runs on CircleCI, so only builds the Android version. You can clone the code and build the iOS version (and deploy it) using the makefile.
 
 ## TODO Brief Comparison of CI/CD platforms
 
