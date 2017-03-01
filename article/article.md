@@ -12,7 +12,7 @@ We take our code, perform some kind of validation (such as testing, linting, wha
 
 Often though there's a bit more to it than that:
 
-![Basic CI is not Basic](/content/images/2017/02/2-basic-not-basic-1.png)
+![Basic CI is not Basic](/content/images/2017/03/2-basic-not-basic-1.png)
 
 Our source code has some metadata associated with it at the point in time you create your binaries, such as:
 
@@ -21,14 +21,12 @@ Our source code has some metadata associated with it at the point in time you cr
 - A tag, which may represent something like a semver, or may have more project-specific meaning.
 - A version, which might be in something like a `package.json` or embedded in your project files for iOS or Android.
 
-We might also try to keep some kind of build number, to track which build created a set of binaries.
+When we build we have to:
 
-On the apps themselves, we have things like:
-
-- Package names and bundle ids, which theoretically should be unique on a device, causing headaches if you are going to install multiple *versions* of an app (e.g. dev and UAT builds)
-- A build number and version number
-
-Ideally we want our CI to keep everything in sync. If I have an app running on a user's device, it should have a version number which is related to the code and we should be able to see the exact SHA from which the apps were created.
+- Think about how we test and validate
+- Think about how we sign
+- Handle package names and bundle ids, which can cause headaches if you are going to install multiple *versions* of an app (e.g. dev and UAT builds)
+- Consider build numbers and version number
 
 So even the 'basic' CI isn't all that basic. Before we dive into some specific tricks for managing these challenges we should first establish some basic principles for mobile app CI.
 
@@ -36,9 +34,9 @@ So even the 'basic' CI isn't all that basic. Before we dive into some specific t
 
 Some general principles it can be useful to follow are below. 
 
-- Developers should be able to run all of the key CI steps on their local machine, to be able to understand, adapt and develop the process.
+- Developers should be able to run all of the key CI steps on their local machine, to be able to understand, adapt and improve the process
 - When building more complex features, we should create small, simple units of work which can be composed into larger pipelines
-- Complexity, if needed, is in code - not in 'black box' CI tools.
+- Complexity, if needed, should be in in code - not in 'black box' CI tools
 
 ## Tip 1 - Embrace Makefiles
 
@@ -47,7 +45,7 @@ There are a raft of platform and framework specific tools and interfaces we will
 If you ensure that your main 'entrypoint' to key operations is a recipe in a makefile, you can provide a degree of consistency to mobile projects. For example:
 
 - `make build` - Creates an IPA and APK, saving them to the `./artifacts` folder.
-- `make tests` - Runs all test suites; perfect for CI.
+- `make tests` - Runs all test suites.
 - `make deploy` - Deploys the binaries.
 
 A `makefile` for such commands might look like this:
@@ -77,7 +75,9 @@ This is a slightly shortened snippet, you can see a working example here:
 
 [github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app)
 
-This example demonstrates using makefiles to handle key commands for a React Native app. CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy.
+The example above example demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy. 
+
+The nice feature is that the meat of the logic is in the main repo, in the `makefile` - the CI tool simply orchestrates it. Developers can run exactly the same commands on their local machine.
 
 The [`README.md`](https://github.com/dwmkerr/beautifully-simple-app-ci/blob/master/1_react_native_app/README.md) immediately draws attention to the makefile commands:
 
@@ -86,15 +86,19 @@ The [`README.md`](https://github.com/dwmkerr/beautifully-simple-app-ci/blob/mast
 The makefiles do most of the work, that makes setting up CircleCI almost trivial. Here's a snippet of its config:
 
 ```
+# Tell Circle where we keep our artifacts.
 general:
   artifacts:
     - ./artifacts
 
+# When we test, we build the android app and test it.
 test:
   override:
     - make build-android
     - make test
 
+# If there are any changes to the master branch, push a new version
+# of the app.
 deployment:
   master:
     branch: [master]
@@ -121,3 +125,67 @@ Also, if a commit is made to the `master` branch, our new app is automatically p
 We'll see more interesting makefile recipes as we get into the other tips.
 
 ## Tip 2 - Create a 'Touch' Command to control version numbers
+
+iOS and Android apps have both a *version number* and a *build number*. We might have other files in our project with version numbers too (such as a `package.json` file).
+
+It can be very useful to have a way of keeping these version numbers in sync. Again, we can use a `makefile`:
+
+```bash
+make touch
+```
+
+This command will vary in implementation depending on your platform. For example, this would be all that is needed for a Cordova based project:
+
+```
+# The version in package.json is the 'master' version.
+VERSION ?= $(shell cat package.json | jq --raw-output .version)
+BUILD_NUM ?= 0
+
+touch:
+    $(info "Touching to version $(VERSION) and build number $(BUILD_NUM).")
+    sed -i "" -e 's/android-versionCode=\"[0-9]*\"/android-versionCode=\"$(BUILD_NUM)\"/g' ./config.xml
+    sed -i "" -e 's/ios-CFBundleVersion=\"[0-9]*\"/ios-CFBundleVersion=\"$(BUILD_NUM)\"/g' ./config.xml
+    sed -i "" -e 's/version=\"[.0-9a-zA-Z]*\"/version=\"$(VERSION)"/g' ./config.xml
+```
+
+Notice we don't really need complex tools for a job like this, `sed` is sufficient to quickly make changes to config files.
+
+This works very nicely with build systems, many of which provide a build number as an environment variable. For example, we can add a build number with CircleCI like so:
+
+```
+# Turn our CircleCI specific build number environment variable into
+# a plain old build number, used in the makefile.
+machine:
+    BUILD_NUM: $CIRCLE_BUILD_NUM
+
+# When we test, touch the versions, run the tests, then build.
+test:
+    override:
+      - make touch
+      - make test
+      - make build
+```
+
+A working example is available at:
+
+[github.com/dwmkerr/beautifully-simple-app-ci/2_ionic_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/2_ionic_app)
+
+This sample will always set the build number 
+
+## TODO Brief Comparison of CI/CD platforms
+
+**CircleCI**
+
+- Very simple
+
+**TravisCI**
+
+- Support iOS builds out of the box for Open Source projects
+
+Others
+
+- Codecov
+- Coveralls
+- BuddyBuild
+- TestFairy
+- Crashlytics

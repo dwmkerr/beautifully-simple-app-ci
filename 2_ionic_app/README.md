@@ -6,7 +6,7 @@ This app is a demo of the beautifully simple CI/CD process mentioned [here](../R
 |---------|-------|
 | `make test` | Runs all of the tests for the project. |
 | `make build` | Creates the IPA and APK binaries and saves them in the `./artifacts` folder. |
-| `make deploy` | Pushes the binaries to TestFairy. |
+| `make deploy` | Pushes the binaries to HockeyApp. |
 | - | - |
 | `ionic serve` | Runs the app in a browser locally. |
 | `ionic run android` | Runs the app in the Android emulator. |
@@ -32,7 +32,7 @@ You will also need to configure some environment variables. Put the followining 
 | Environment Variable | Usage |
 |----------------------|-------|
 | `IA_KEYSTORE_PASSWORD` | Provides the password for the Android Keystore. For this demo app, should be `p@ssw0rd`. |
-| `IA_CODE_SIGNING_IDENTITY` | The name of your Code Signing Identity (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
+| `IA_TEAM_ID` | Your team ID (see [Setting up iOS Code Signing](#Setting-up-iOS-Code-Signing)) |
 | `IA_HOCKEYAPP_TOKEN` | Your API token for uploading to [HockeyApp](https://www.hockeyapp.net). |
 
 ## Setting up iOS Code Signing
@@ -75,18 +75,7 @@ Policy: Code Signing
      2 valid identities found
 ```
 
-Copy the name of the **iPhone Distribution** identity from the **Valid identities** list, in this case `iPhone Developer: Dave Kerr (D2TKYQF77R)`. You must set the `IA_CODE_SIGNING_IDENTITY` environment variable to this value.
-
-### Troubleshooting iOS Code Signing
-
-**Application needs signing**
-
-Ensure you've followed the setup steps. Open the XCode Project, go to the build settings and ensure 'Automatically Manage Signing' is disabled. Manually set the release provisioning profile to the one you generated during the setup steps.
-
-Useful references:
-
-- https://circleci.com/docs/ios-code-signing/
-- https://facebook.github.io/react-native/releases/0.31/docs/running-on-device-ios.html
+Copy the name of the **iPhone Development** team id from the **Valid identities** list, in this case `iPhone Developer: Dave Kerr (D2TKYQF77R)`. You must set the ID in the `IA_TEAM_ID` environment variable to this value (e.g. `export IA_TEAM_ID=D2TKYQF77R`).
 
 ## Managing Android Keystores
 

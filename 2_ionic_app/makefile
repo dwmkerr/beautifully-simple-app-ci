@@ -40,21 +40,38 @@ endif
 	curl https://rink.hockeyapp.net/api/2/apps/upload \
     -F "status=2" \
     -F "notify=1" \
-	  -F "bundle_short_version=$(VERSION)" \
-	  -F "bundle_version=$(BUILD_NUM)" \
+	-F "bundle_short_version=$(VERSION)" \
+	-F "bundle_version=$(BUILD_NUM)" \
     -F "ipa=@./artifacts/ionic_app.apk" \
     -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
 
 # Creates the iOS IPA.
 build-ios:
-ifndef IA_CODE_SIGNING_IDENTITY
-	$(error No IA_CODE_SIGNING_IDENTITY is set, cannot build IPA.)
+ifndef IA_TEAM_ID
+	$(error No IA_TEAM_ID is set, cannot build IPA.)
 endif
 	# Recreate the iOS platform.
 	rm -rf ./platforms/ios
 	cordova platform add ios
 	npm run ionic:build
 	cordova prepare ios --release
-	cd ./platforms/ios; fastlane gym --scheme "ionic_app" \
-		--use_legacy_build_api \
-		--codesigning_identity "$(RNA_CODE_SIGNING_IDENTITY)"; cd ../..;
+	sed -i '' 's/ProvisioningStyle = Automatic;/ProvisioningStyle = Manual;/' platforms/ios/ionic_app.xcodeproj/project.pbxproj
+	cd ./platforms/ios; \
+		cordova build ios --device \
+    	--codeSignIdentity="iPhone Developer" \
+    	--developmentTeam="$(IA_TEAM_ID)" \
+    	--packageType="development"; \
+	cd ../..;
+	cp platforms/ios/build/device/*.ipa ./artifacts/ionic_app.ipa
+
+deploy-ios: touch build-ios
+ifndef IA_HOCKEYAPP_TOKEN
+	$(error No IA_HOCKEYAPP_TOKEN is set, cannot deploy to HockeyApp.)
+endif
+	curl https://rink.hockeyapp.net/api/2/apps/upload \
+    -F "status=2" \
+    -F "notify=1" \
+	-F "bundle_short_version=$(VERSION)" \
+	-F "bundle_version=$(BUILD_NUM)" \
+    -F "ipa=@./artifacts/ionic_app.ipa" \
+    -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
