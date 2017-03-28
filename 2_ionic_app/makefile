@@ -12,6 +12,12 @@ touch:
 	sed -i "" -e 's/ios-CFBundleVersion=\"[0-9]*\"/ios-CFBundleVersion=\"$(BUILD_NUM)\"/g' ./config.xml
 	sed -i "" -e 's/version=\"[.0-9a-zA-Z]*\"/version=\"$(VERSION)"/g' ./config.xml
 
+# Labels the app.
+label:
+	$(info Labeling icon with '$(VERSION)' and '$(BUILD_NUM)'...)
+	app-icon label -i base-icon.png -o icon.png --top $(VERSION) --bottom $(BUILD_NUM)
+	app-icon generate -i icon.png
+
 # Tests the code.
 test:
 	$(warning No tests so far, do not forget to add some in the future.)

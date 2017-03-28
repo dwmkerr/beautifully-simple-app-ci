@@ -1,0 +1,4 @@
+node_modules/
+
+# The generated icon.
+icon.png

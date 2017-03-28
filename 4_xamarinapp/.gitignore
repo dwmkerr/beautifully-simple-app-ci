@@ -1,0 +1,9 @@
+# The generated icon.
+icon.png
+
+*.userprefs
+Droid/obj/
+iOS/bin/
+iOS/obj/
+xamarinapp/bin/
+xamarinapp/obj/

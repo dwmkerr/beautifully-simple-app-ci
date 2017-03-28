@@ -186,6 +186,38 @@ And all of the version numbers and build numbers are updated and the apps are de
 
 This build also runs on CircleCI, so only builds the Android version. You can clone the code and build the iOS version (and deploy it) using the makefile.
 
+# Tip 3 - Label Your Icons
+
+When you are working in a larger team, it can be very useful to label your app icon so that team members know exactly what version of the app they are using. This is often the case if you are working in a team where features or bugfixes are being deployed rapidly.
+
+You might label your icons with build numbers, SHAs, branch names, versions, tags, or even something custom such as 'QA' or 'UAT' for different versions of your app. Here are a few examples:
+
+TODO Screenshot of each sample app, one labeled with version
+![Labelled Icons Screenshot](TODO)
+
+I've found this to be very useful, so created a command-line tool called '[app-icon](github.com/dwmkerr/app-icon)' to help with the task. There is a `label` command to add a label, and a `generate` command to generate icons of all different sizes. This means you can add recipes like this to your `makefile`:
+
+```
+VERSION ?= $(shell cat package.json | jq --raw-output .version)
+BUILD_NUM ?= 0
+
+label:
+    $(info Labeling icon with '$(VERSION)' and '$(BUILD_NUM)'...)
+    app-icon label -i base-icon.png -o icon.png --top $(VERSION) --bottom $(BUILD_NUM)
+    app-icon generate -i icon.png
+```
+
+Each sample app labels its icon in a different way:
+
+1. The [React Native App](./1_react_native_app/) puts the short Git SHA on the bottom of the icon.
+2. The [Ionic App](./2_ionic_app/) puts the `package.json` version at the top of the icon.
+3. The [Native App](./3_native_app) puts an environment label at the top of the icon, and the build number at the bottom.
+
+## Task List for Writeup
+
+- [ ] Include TOC for the key topics.
+- [ ] Decide on whether to use *each* tip for *each* platform. (YES)
+
 ## TODO Brief Comparison of CI/CD platforms
 
 **CircleCI**

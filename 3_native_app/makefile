@@ -1,23 +1,18 @@
 # Set the default parameters for the build, can be overridden with either an
 # environment variable or by using `make target KEY=VALUE`.
-VERSION ?= $(shell cat package.json | jq --raw-output .version)
 BUILD_NUM ?= 0
-
-debug:
-	echo "version $(VERSION)"
-
-# Touch will ensure that all version numbers are consistent, based on the
-# package.json version.
-touch:
-  # Set the version and build number in the config file.
-	sed -i "" -e 's/android-versionCode=\"[0-9]*\"/android-versionCode=\"$(BUILD_NUM)\"/g' ./config.xml
-	sed -i "" -e 's/ios-CFBundleVersion=\"[0-9]*\"/ios-CFBundleVersion=\"$(BUILD_NUM)\"/g' ./config.xml
-	sed -i "" -e 's/version=\"[.0-9a-zA-Z]*\"/version=\"$(VERSION)"/g' ./config.xml
+LABEL ?= QA
 
 # Tests the code.
 test:
 	$(warning No tests so far, do not forget to add some in the future.)
 	@echo 0
+
+# Labels the app.
+label:
+	$(info Labeling icon with '$(LABEL)' and '$(BUILD_NUM)'...)
+	app-icon label -i base-icon.png -o icon.png --top $(LABEL) --bottom $(BUILD_NUM)
+	app-icon generate
 
 # Creates the Android APK.
 build-android:

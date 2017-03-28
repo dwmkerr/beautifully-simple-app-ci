@@ -35,3 +35,6 @@ UserInterfaceState.xcuserstate
 
 # Ignore the entire artifacts folder.
 artifacts/
+
+# The generated icon.
+icon.png

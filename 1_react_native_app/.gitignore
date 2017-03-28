@@ -56,3 +56,6 @@ fastlane/screenshots
 # Certificates, debugging symbols.
 certificates
 *.dSYM.zip
+
+# The generated icon.
+icon.png

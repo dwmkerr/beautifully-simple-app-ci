@@ -1,12 +1,15 @@
 # Get key SHA, Branch and Tag data.
 GIT_SHORT_SHA := $(shell git log -1 --format="%h")
 
-# Bundle
-BUNDLE_ID=org.reactjs.native.example.react-native-app
-
 # Test should run all project tests.
 test:
 	npm test
+
+# Labels the app.
+label:
+	$(info Labeling icon with '$(GIT_SHORT_SHA)'...)
+	app-icon label -i base-icon.png -o icon.png --bottom $(GIT_SHORT_SHA)
+	app-icon generate
 
 # Builds the APK to the artifacts folder.
 build-android:
