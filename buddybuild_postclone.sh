@@ -8,4 +8,5 @@ rm -rf 4_xamarinapp/
 
 # Label the app.
 cd 3_native_app
+npm install
 BUILD_NUM=BUDDYBUILD_BUILD_NUMBER make label
