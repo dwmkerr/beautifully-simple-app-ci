@@ -217,6 +217,8 @@ Each sample app labels its icon in a different way:
 
 - [ ] Include TOC for the key topics.
 - [ ] Decide on whether to use *each* tip for *each* platform. (YES)
+- [ ] Add some visual pipelines for each project
+
 
 ## TODO Brief Comparison of CI/CD platforms
 

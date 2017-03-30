@@ -8,8 +8,8 @@ test:
 # Labels the app.
 label:
 	$(info Labeling icon with '$(GIT_SHORT_SHA)'...)
-	app-icon label -i base-icon.png -o icon.png --bottom $(GIT_SHORT_SHA)
-	app-icon generate
+	./node_modules/.bin/app-icon label -i base-icon.png -o icon.png --bottom $(GIT_SHORT_SHA)
+	./node_modules/.bin/app-icon generate
 
 # Builds the APK to the artifacts folder.
 build-android:
