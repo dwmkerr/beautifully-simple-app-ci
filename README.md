@@ -4,9 +4,9 @@ This repository demonstrates some beautifully simple techniques for handling CI 
 
 | Sample | CI/CD Provider| App Distribution Technology  | Status |
 |--------|---------------|------------------------------|--------|
-| ![React Native Icon](./article/icon_react_native.png) [React Native App](./1_react_native_app) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | ✅ Android Mac Local ✅ iOS Mac Local ✅ Android CI ❗ iOS CI |
-| ![Ionic Icon](./article/icon_ionic.png) [Ionic 2 Hybrid App](./2_ionic_app) | [TravisCI](https://travis-ci.com/) | [HockeyApp](https://www.hockeyapp.net) | ✅ Android Mac Local ❗ iOS Mac Local ✅ Android CI ❗ iOS CI |
-| TODO [Native App](./3_native_app) | BuddyBuild | [BuddyBuild | ✅ Android Mac Local ❗ iOS Mac Local ✅ Android CI ❗ iOS CI |
+| [React Native App](./1_react_native_app) | [CircleCI](https://circleci.com/) | [TestFairy](https://testfairy.com/) | [![CircleCI](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci.svg?style=shield)](https://circleci.com/gh/dwmkerr/beautifully-simple-app-ci) |
+| [Ionic 2 Hybrid App](./2_ionic_app) | [TravisCI](https://travis-ci.com/) | [HockeyApp](https://www.hockeyapp.net) | https://travis-ci.org/dwmkerr/beautifully-simple-app-ci.svg?branch=master |
+| [Native App](./3_native_app) | BuddyBuild | BuddyBuild | [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=58b6e6ddf3eea90100b2e721&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/58b6e6ddf3eea90100b2e721/build/latest?branch=master) |
 
 ## Principles to Follow
 
