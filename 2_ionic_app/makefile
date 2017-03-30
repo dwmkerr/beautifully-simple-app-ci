@@ -15,8 +15,8 @@ touch:
 # Labels the app.
 label:
 	$(info Labeling icon with '$(VERSION)' and '$(BUILD_NUM)'...)
-	app-icon label -i base-icon.png -o icon.png --top $(VERSION) --bottom $(BUILD_NUM)
-	app-icon generate -i icon.png
+	./node_modules/.bin/app-icon label -i base-icon.png -o icon.png --top $(VERSION) --bottom $(BUILD_NUM)
+	./node_modules/.bin/app-icon generate -i icon.png
 
 # Tests the code.
 test:

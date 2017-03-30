@@ -11,8 +11,8 @@ test:
 # Labels the app.
 label:
 	$(info Labeling icon with '$(LABEL)' and '$(BUILD_NUM)'...)
-	app-icon label -i base-icon.png -o icon.png --top $(LABEL) --bottom $(BUILD_NUM)
-	app-icon generate
+	./node_modules/.bin/app-icon label -i base-icon.png -o icon.png --top $(LABEL) --bottom $(BUILD_NUM)
+	./node_modules/.bin/app-icon generate
 
 # Creates the Android APK.
 build-android:
