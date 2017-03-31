@@ -3,7 +3,11 @@ icon.png
 
 *.userprefs
 Droid/obj/
+Droid/bin/
 iOS/bin/
 iOS/obj/
 xamarinapp/bin/
 xamarinapp/obj/
+
+# The artifacts folder.
+artifacts/
