@@ -11,3 +11,4 @@ xamarinapp/obj/
 
 # The artifacts folder.
 artifacts/
+node_modules/
