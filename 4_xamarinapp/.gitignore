@@ -12,3 +12,6 @@ xamarinapp/obj/
 # The artifacts folder.
 artifacts/
 node_modules/
+
+# Backup files created by the sed commands we run.
+*.bak
