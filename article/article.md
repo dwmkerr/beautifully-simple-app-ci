@@ -199,7 +199,7 @@ I've found this to be very useful, so created a command-line tool called '[app-i
 
 ```
 VERSION ?= $(shell cat package.json | jq --raw-output .version)
-BUILD_NUM ?= 0
+BUILD_NUM ?= 0    # This might come from Circle, Travis or Whatever...
 
 label:
     $(info Labeling icon with '$(VERSION)' and '$(BUILD_NUM)'...)
@@ -213,11 +213,39 @@ Each sample app labels its icon in a different way:
 2. The [Ionic App](./2_ionic_app/) puts the `package.json` version at the top of the icon.
 3. The [Native App](./3_native_app) puts an environment label at the top of the icon, and the build number at the bottom.
 
+# Tip 4 - Support Configurable App Ids
+
+Another trick I've found useful is to have a command which automatically updates your iOS Bundle ID or Android Application ID. This can be handy when you have multiple versions of an app (such as a QA build, dev build, UAT build or whatever). If you have users who need to have different versions of your app on their phones, this is actually a necessary step (at least for iOS), as you cannot have multiple versions of an app with the same ID installed.
+
+Often, I will aim to have a standard 'base id', such as:
+
+```
+com.dwmkerr.myapp
+```
+
+and then simply append whatever the 'flavour' of my app is to the end of the id:
+
+```
+com.dwmkerr.myapp_qa      # The QA build...
+com.dwmkerr.myapp_uat     # The UAT build...
+```
+
+The base id is then reserved for the master build, which is what goes into production.
+
+Just like with all of the other tricks, I tend to use a recipe in the `makefile` to do the heavy lifting, and then leave the build system to orchestrate the commands (we'll see more of this later):
+
+```
+make build                # Builds the master version of the app.
+make build ENV=qa         # Builds the qa version of the app.
+```
+
+
 ## Task List for Writeup
 
 - [ ] Include TOC for the key topics.
 - [ ] Decide on whether to use *each* tip for *each* platform. (YES)
 - [ ] Add some visual pipelines for each project
+- [ ] Finish the env examples, with config files
 
 
 ## TODO Brief Comparison of CI/CD platforms
