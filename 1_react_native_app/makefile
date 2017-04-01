@@ -25,6 +25,9 @@ endif
 	cd ./ios; fastlane gym --scheme "react_native_app" --codesigning_identity "$(RNA_CODE_SIGNING_IDENTITY)"; cd ../;
 	cp -f ./ios/react_native_app.ipa ./artifacts
 
+# Builds everythang.
+build: build-android build-ios
+
 # Deploys the apps to TestFairy.
 deploy-android:
 ifndef TESTFAIRY_API_KEY
@@ -50,3 +53,6 @@ endif
 		-F auto-update='on' \
 		-F metrics='cpu,network,logcat' \
 		-F options='shake'
+
+# Deploys everythang.
+deploy: deploy-android deploy-ios

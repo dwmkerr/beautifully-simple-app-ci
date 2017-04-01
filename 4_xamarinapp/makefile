@@ -31,3 +31,6 @@ build-android:
 # Creates the iOS IPA.
 build-ios:
 	"/Library/Frameworks/Mono.framework/Commands/xbuild" /p:Configuration="Release" /p:Platform="iPhone" /p:IpaPackageDir="../artifacts/" "/p:BuildIpa=true" xamarinapp.sln
+
+# Creates everything.
+build: build-android build-ios

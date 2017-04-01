@@ -39,18 +39,6 @@ endif
 		-storepass $(IA_KEYSTORE_PASSWORD) -keypass $(IA_KEYSTORE_PASSWORD) \
 			"./artifacts/ionic_app.apk" ionic_app
 
-deploy-android: touch build-android
-ifndef IA_HOCKEYAPP_TOKEN
-	$(error No IA_HOCKEYAPP_TOKEN is set, cannot deploy to HockeyApp.)
-endif
-	curl https://rink.hockeyapp.net/api/2/apps/upload \
-    -F "status=2" \
-    -F "notify=1" \
-	-F "bundle_short_version=$(VERSION)" \
-	-F "bundle_version=$(BUILD_NUM)" \
-    -F "ipa=@./artifacts/ionic_app.apk" \
-    -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
-
 # Creates the iOS IPA.
 build-ios:
 ifndef IA_TEAM_ID
@@ -69,6 +57,21 @@ endif
     	--packageType="development"; \
 	cd ../..;
 	cp platforms/ios/build/device/*.ipa ./artifacts/ionic_app.ipa
+
+# Create for both platforms.
+build: build-android build-ios
+
+deploy-android: touch build-android
+ifndef IA_HOCKEYAPP_TOKEN
+	$(error No IA_HOCKEYAPP_TOKEN is set, cannot deploy to HockeyApp.)
+endif
+	curl https://rink.hockeyapp.net/api/2/apps/upload \
+    -F "status=2" \
+    -F "notify=1" \
+	-F "bundle_short_version=$(VERSION)" \
+	-F "bundle_version=$(BUILD_NUM)" \
+    -F "ipa=@./artifacts/ionic_app.apk" \
+    -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
 
 deploy-ios: touch build-ios
 ifndef IA_HOCKEYAPP_TOKEN
