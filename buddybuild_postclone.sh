@@ -9,7 +9,7 @@ rm -rf 4_xamarinapp/
 # Install the dependencies.
 # brew install imagemagick
 curl https://www.imagemagick.org/download/binaries/ImageMagick-x86_64-apple-darwin16.4.0.tar.gz | tar xvz
-export MAGICK_HOME="$HOME/ImageMagick-x86_64-apple-darwin16.4.0"
+export MAGICK_HOME="$PWD/ImageMagick-x86_64-apple-darwin16.4.0"
 export PATH="$MAGICK_HOME/bin:$PATH"
 export DYLD_LIBRARY_PATH="$MAGICK_HOME/lib/"
 
