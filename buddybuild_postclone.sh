@@ -7,7 +7,12 @@ rm -rf 2_ionic_app/
 rm -rf 4_xamarinapp/
 
 # Install the dependencies.
-brew install imagemagick
+# brew install imagemagick
+curl https://www.imagemagick.org/download/binaries/ImageMagick-x86_64-apple-darwin15.6.0.tar.gz | tar xvz
+export MAGICK_HOME="$HOME/ImageMagick-x86_64-apple-darwin15.6.0"
+export PATH="$MAGICK_HOME/bin:$PATH"
+export DYLD_LIBRARY_PATH="$MAGICK_HOME/lib/"
+
 
 # Label the app.
 cd 3_native_app
