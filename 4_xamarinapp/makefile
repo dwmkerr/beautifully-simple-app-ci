@@ -13,7 +13,7 @@ endif
 # Labels the app.
 label:
 	$(info Labeling icon with '$(ENV)' and '$(BUILD_NUM)'...)
-	./node_modules/.bin/app-icon label -i base-icon.png -o icon.png --top $(LABEL) --bottom $(BUILD_NUM)
+	./node_modules/.bin/app-icon label -i base-icon.png -o icon.png --top $(ENV) --bottom $(BUILD_NUM)
 	./node_modules/.bin/app-icon generate
 
 # Names the app based on the ENV variable.
