@@ -6,6 +6,9 @@ rm -rf 1_react_native_app/
 rm -rf 2_ionic_app/
 rm -rf 4_xamarinapp/
 
+# Install the dependencies.
+brew install imagemagick
+
 # Label the app.
 cd 3_native_app
 npm install
