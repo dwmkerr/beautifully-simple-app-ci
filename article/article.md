@@ -1,10 +1,18 @@
-CI and CD for mobile apps can be challenging. Creating signed apps requires a fair amount of setup, as well as the management of secrets, certificates, keystores, provisioning profiles and so on.
+In this article I'm going to demonstrate some simple tips and tricks which will help you build and maintain beautifully simple mobile CI.
 
-In this article I'm going to demonstrate some simple tips and tricks, which will help you build and maintain beautifully simple mobile CI, regardless of the underlying technology.
+These techniques can be applied to different mobile app technologies and integrated into almost any build system. To demonstrate this, each tip is demonstrated in a React Native, Cordova (Ionic 2), Pure Native and Xamarin App, for both iOS and Android.
 
-## The Basic CI Pipeline
+1. [The Challenges of Mobile App CI](#The-Challenges-of-Mobile-App-CI)
+0. [Tip 1 - Embrace Makefiles for Consistency](#Embrace-Makefiles-for-Consistency)
+0. [Tip 2 - Control Version Numbers with a 'Touch' Command](#Tip-2---Control-Version-Numbers-with-a-'Touch'-Command)
+0. [Tip 3 - Control App Icons with a 'Label' Command](#Tip-3---Control-App-Icons-with-a-'Label'-Command)
+0. [Tip 4 - Support Configurable App Ids](#Tip-4---Support-Configurable-App-Ids)
+0. [Tip 5 - Document, Document, Document](#Tip-5---Document,-Document,-Document)
+0. [Conclusion](#/conclusion)
 
-Conceptually, a CI pipeline is pretty simple:
+## The Challenges of Mobile App CI
+
+Conceptually, a mobile app CI pipeline is pretty simple:
 
 ![Basic CI Pipeline](/content/images/2017/02/1-basic-ci.png)
 
@@ -28,24 +36,16 @@ When we build we have to:
 - Handle package names and bundle ids, which can cause headaches if you are going to install multiple *versions* of an app (e.g. dev and UAT builds)
 - Consider build numbers and version number
 
-So even the 'basic' CI isn't all that basic. Before we dive into some specific tricks for managing these challenges we should first establish some basic principles for mobile app CI.
+So even the 'basic' CI isn't all that basic. The rest of this article is a set of tips and techniques which I have found useful over the years when developing mobile apps.
 
-## Principles
-
-Some general principles it can be useful to follow are below. 
-
-- Developers should be able to run all of the key CI steps on their local machine, to be able to understand, adapt and improve the process
-- When building more complex features, we should create small, simple units of work which can be composed into larger pipelines
-- Complexity, if needed, should be in in code - not in 'black box' CI tools
-
-## Tip 1 - Embrace Makefiles
+## Tip 1 - Embrace Makefiles for Consistency
 
 There are a raft of platform and framework specific tools and interfaces we will have to use in mobile projects. XCode, Gradle, NPM, framework specific CLIs, tools such as Fastlane, etc etc.
 
 If you ensure that your main 'entrypoint' to key operations is a recipe in a makefile, you can provide a degree of consistency to mobile projects. For example:
 
 - `make build` - Creates an IPA and APK, saving them to the `./artifacts` folder.
-- `make tests` - Runs all test suites.
+- `make test` - Runs all test suites.
 - `make deploy` - Deploys the binaries.
 
 A `makefile` for such commands might look like this:
@@ -59,7 +59,7 @@ build:
     # Create the apk, copy to artifacts.
     cd android && ./gradlew assembleRelease && cd ..
     cp -f ./android/app/build/outputs/apk/myapp-release.apk ./artifacts
-    
+
     # Create the ipa, copy to artifacts.
     cd ./ios; fastlane gym --scheme "app" --codesigning_identity "$(CODE_SIGNING_IDENTITY)"; cd ../;
     cp -f ./ios/myapp.ipa ./artifacts
@@ -75,7 +75,7 @@ This is a slightly shortened snippet, you can see a working example here:
 
 [github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app)
 
-The example above example demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy. 
+The example above example demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy.
 
 The nice feature is that the meat of the logic is in the main repo, in the `makefile` - the CI tool simply orchestrates it. Developers can run exactly the same commands on their local machine.
 
@@ -116,6 +116,14 @@ Also, if a commit is made to the `master` branch, our new app is automatically p
 
 ![Screenshot of TestFairy](/content/images/2017/02/5-tip1-testfairy.png)
 
+There are some other benefits to using makefiles:
+
+- The syntax is close enough to shell scripting that simple operations are generally straightforward to implement
+- Environment variables are first class citizens, e.g. `VERSION ?= 1.0.0` sets a variable called `VERSION` to `1.0.0`, but any environment variable named `VERSION` overwrites this
+- The approach is also perfectly valid for server side code and almost any project. Teams with many projects can build consistent patterns and syntax for building (see [Simple Continuous Integration for Docker Images](http://www.dwmkerr.com/simple-continuous-integration-for-docker-images/))
+
+Makefile syntax can be clumsy at times. When a recipe gets to be more than a few lines, consider writing a script (in Node, Python, Perl, whatever you like) and then calling the script from the makefile (so it remains the *entrypoint* for functions).
+
 **In Summary**
 
 - Makefiles allow you to provide an entrypoint for common app CI tasks which is framework and toolkit agnostic
@@ -124,7 +132,7 @@ Also, if a commit is made to the `master` branch, our new app is automatically p
 
 We'll see more interesting makefile recipes as we get into the other tips.
 
-## Tip 2 - Create a 'Touch' Command to control version numbers
+## Tip 2 - Control Version Numbers with a 'Touch' command
 
 iOS and Android apps have both a *version number* and a *build number*. We might have other files in our project with version numbers too (such as a `package.json` file).
 
@@ -186,7 +194,20 @@ And all of the version numbers and build numbers are updated and the apps are de
 
 This build also runs on CircleCI, so only builds the Android version. You can clone the code and build the iOS version (and deploy it) using the makefile.
 
-# Tip 3 - Label Your Icons
+By using a variable with a default value for the version (defined for example like this: `VERSION ?= $(shell cat package.json | jq --raw-output .version)`) we can set the version to any arbitrary value with ease:
+
+```
+make touch VERSION=0.1.2            # Makefile variable syntax
+VERSION=3.4.5 make touch            # Environment variable (inline)
+export VERSION=6.7.8 && make touch  #
+```
+
+**In Summary**
+
+- There will come a point in your project development where you'll need to handle version numbers, having a command to explicitly deal with this adds rigour to this process
+- Build numbers are just as important as version numbers during development, ensuring your CI build number is baked into your artifacts is critical for troubleshooting and control
+
+# Tip 3 - Control App Icons with a 'Label' Command
 
 When you are working in a larger team, it can be very useful to label your app icon so that team members know exactly what version of the app they are using. This is often the case if you are working in a team where features or bugfixes are being deployed rapidly.
 
@@ -212,6 +233,26 @@ Each sample app labels its icon in a different way:
 1. The [React Native App](./1_react_native_app/) puts the short Git SHA on the bottom of the icon.
 2. The [Ionic App](./2_ionic_app/) puts the `package.json` version at the top of the icon.
 3. The [Native App](./3_native_app) puts an environment label at the top of the icon, and the build number at the bottom.
+4. The [Xamarin App](./4_xamarinapp) includes the configurable app environment (this is detailed in the next tip) and build number
+
+There are references to each sample and the associated code in the `README.md` at:
+
+[github.com/dwmkerr/beautifully-simple-app-ci](https://github.com/dwmkerr/beautifully-simple-app-ci)
+
+As a quick example, the Pure Native App runs this code prior to each build:
+
+```bash
+BUILD_NUM=BUDDYBUILD_BUILD_NUMBER make label
+```
+
+This app uses BuddyBuild as a build system, meaning we can just drop this line in the [`buddybuild_postclone.sh`](./buddybuild_postclone.sh) script. You can see the labeled icons directly in the BuddyBuild UI:
+
+![TODO](BuddyBuild icons)
+
+**In Summary**
+
+- A little bit of time invested in managing your app icon can potentially save many hours if you are rapidly iterating on apps
+- The [`app-icon`](https://github.com/dwmkerr/app-icon) tool can help you quickly label and generate icons
 
 # Tip 4 - Support Configurable App Ids
 
@@ -237,7 +278,7 @@ Just like with all of the other tricks, I tend to use a recipe in the `makefile`
 ```
 ENV ?= production
 
-# Set the app id, with the 'prod' environment implying the unaltered 'base' id.
+# Set the app id, with the 'production' environment implying the unaltered 'base' id.
 ifeq ($(ENV),production)
 	APP_ID=com.dwmkerr.xamarinapp
 else
@@ -252,28 +293,34 @@ name:
 
 This small recipe can be very useful in combination with other techniques. Ensuring your build respects the `ENV` variable (or whatever you name your 'flavour') means that you can have different configurations for different environments, build multiple versions of the app, each with a distinct app icon, and distribute them to your team.
 
-## Task List for Writeup
+**In Summary**
 
-- [ ] Include TOC for the key topics.
-- [ ] Decide on whether to use *each* tip for *each* platform. (YES)
-- [ ] Add some visual pipelines for each project
-- [ ] Finish the env examples, with config files
+- Configurable App Ids allow you to maintain isolated builds of your app for specific environments, even on the same physical device
+- This tip must be used with caution, some features (such as iOS push notifications) will not work if the bundle id is changed (it can also cause issues if your provisioning profile does not use a wildcard)
 
+## Tip 5 - Document, Document, Document
 
-## TODO Brief Comparison of CI/CD platforms
+Even teams which are great at documenting complex application code can sometimes be a bit lax when it comes to documenting build related code.
 
-**CircleCI**
+Unfortunately, build related code will often need *more* documentation than usual. Why is this?
 
-- Very simple
+- It is often *complex* (spend any time working with the XCode commandline or provisioning profiles and you'll likely agree)
+- It is *rarely changed* (often worked on heavily at the early stages of a project then not touched)
+- It is *critical* (when it breaks, teams are often blocked)
 
-**TravisCI**
+When something goes wrong with a build process, or needs to be changed, it is a real pain when only one person knows how the code works. Be rigourous with this code, make sure it is documented and reviewed, and share the knowledge around your team. I tend to like to have a table of commands as a quick index in the README.md file, and then heavily comment the code itself:
 
-- Support iOS builds out of the box for Open Source projects
+**In Summary**
 
-Others
+- Be rigourous with documentation, when things go wrong with CI code then people are often blocked
 
-- Codecov
-- Coveralls
-- BuddyBuild
-- TestFairy
-- Crashlytics
+## Conclusion
+
+Most of these tips are fairly explicit, there are detailed examples in the sample project. Familiarity with these patterns and techniques can be useful, but perhaps the most valuable takewaway would be to embrace the following principles:
+
+- Developers should be able to run all of the key CI steps on their local machine, to be able to understand, adapt and improve the process
+- When building more complex features, we should create small, simple units of work which can be composed into larger pipelines
+- Complexity, if needed, should be in in code - not in 'black box' CI tools (such as esoteric features for specific CI providers or Jenkins plugins)
+- Use CI platforms to *orchestrate* work, use makefiles and scripts to handle logic
+
+I hope this article has been useful, any thoughts or comments are always welcome!
