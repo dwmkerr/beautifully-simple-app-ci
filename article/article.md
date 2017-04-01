@@ -232,13 +232,25 @@ com.dwmkerr.myapp_uat     # The UAT build...
 
 The base id is then reserved for the master build, which is what goes into production.
 
-Just like with all of the other tricks, I tend to use a recipe in the `makefile` to do the heavy lifting, and then leave the build system to orchestrate the commands (we'll see more of this later):
+Just like with all of the other tricks, I tend to use a recipe in the `makefile` to do the heavy lifting, and then leave the build system to orchestrate the commands (we'll see more of this later). Here's how a recipe will typically look:
 
 ```
-make build                # Builds the master version of the app.
-make build ENV=qa         # Builds the qa version of the app.
+ENV ?= production
+
+# Set the app id, with the 'prod' environment implying the unaltered 'base' id.
+ifeq ($(ENV),production)
+	APP_ID=com.dwmkerr.xamarinapp
+else
+	APP_ID=com.dwmkerr.xamarinapp_$(ENV)
+endif
+
+name:
+	$(info Naming app '$(APP_ID)'...)
+	sed -i.bak 's/com.dwmkerr.xamarinapp.*</$(APP_ID)</' iOS/Info.plist
+	sed -i.bak 's/com.dwmkerr.xamarinapp.*\"/$(APP_ID)\"/' Droid/Properties/AndroidManifest.xml
 ```
 
+This small recipe can be very useful in combination with other techniques. Ensuring your build respects the `ENV` variable (or whatever you name your 'flavour') means that you can have different configurations for different environments, build multiple versions of the app, each with a distinct app icon, and distribute them to your team.
 
 ## Task List for Writeup
 
