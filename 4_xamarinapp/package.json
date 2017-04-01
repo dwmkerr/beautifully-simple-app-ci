@@ -9,6 +9,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "app-icon": "^0.4.0"
+    "app-icon": "^0.4.1"
   }
 }
