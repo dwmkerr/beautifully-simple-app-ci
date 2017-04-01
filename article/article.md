@@ -284,6 +284,12 @@ name:
 
 This small recipe can be very useful in combination with other techniques. Ensuring your build respects the `ENV` variable (or whatever you name your 'flavour') means that you can have different configurations for different environments, build multiple versions of the app, each with a distinct app icon, and distribute them to your team.
 
+In the screenshots below, you can see how the presence of the `ENV` environment variable automatically updates the App ID (this is taken from the [Xamarin Sample](./4_xamarinapp), which orchestrates builds with Bitrise[^2]:
+
+![The ENV Environment variable in Bitrise](/content/images/2017/04/9-bitrise.png)
+
+![The built apps in Bitrise](/content/images/2017/04/10-bitrise-apps.png)
+
 **In Summary**
 
 - Configurable App Ids allow you to maintain isolated builds of your app for specific environments, even on the same physical device
@@ -299,15 +305,17 @@ Unfortunately, build related code will often need *more* documentation than usua
 - It is *rarely changed* (often worked on heavily at the early stages of a project then not touched)
 - It is *critical* (when it breaks, teams are often blocked)
 
-When something goes wrong with a build process, or needs to be changed, it is a real pain when only one person knows how the code works. Be rigourous with this code, make sure it is documented and reviewed, and share the knowledge around your team. I tend to like to have a table of commands as a quick index in the README.md file, and then heavily comment the code itself:
+When something goes wrong with a build process, or needs to be changed, it is a real pain when only one person knows how the code works. Be rigorous with this code, make sure it is documented and reviewed, and share the knowledge around your team. I tend to like to have a table of commands as a quick index in the README.md file, and then heavily comment the code itself:
+
+![TODO](Commands)
 
 **In Summary**
 
-- Be rigourous with documentation, when things go wrong with CI code then people are often blocked
+- Be rigorous with documentation, when things go wrong with CI code then people are often blocked
 
 ## Conclusion
 
-Most of these tips are fairly explicit, there are detailed examples in the sample project. Familiarity with these patterns and techniques can be useful, but perhaps the most valuable takewaway would be to embrace the following principles:
+Most of these tips are fairly explicit, there are detailed examples in the sample project. Familiarity with these patterns and techniques can be useful, but perhaps the most valuable takeaway would be to embrace the following principles:
 
 - Developers should be able to run all of the key CI steps on their local machine, to be able to understand, adapt and improve the process
 - When building more complex features, we should create small, simple units of work which can be composed into larger pipelines
@@ -321,4 +329,4 @@ I hope this article has been useful, any thoughts or comments are always welcome
 
 **Footnotes**
 
-1: I have successfully used this approach to build Android *and* iOS from the same OSX build agent on their paid plan on a number of projects. The most straightforward way to do this is to have a single build run on OSX and create the Android app as well as the iOS app.
+[1]: I have successfully used this approach to build Android *and* iOS from the same OSX build agent on their paid plan on a number of projects. The most straightforward way to do this is to have a single build run on OSX and create the Android app as well as the iOS app.
