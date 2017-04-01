@@ -1,6 +1,0 @@
-- many people when setting up ci/cd jump straight into tools like jenkins, travis or circle
-- STOP!
-- the first thing to understand is what are we trying to do: generate artifacts from code
-- these artifacts are going to need to be versioned
-- until you can create an IPA or an APK reproducibly on a clean machine with essentially zero manual effort, you are going to build an overly complicated pipeline.
-- the best first steps are to build the components of a pipeline first, as simple commands, then compose them later on

@@ -1,13 +1,13 @@
-In this article I'm going to demonstrate some simple tips and tricks which will help you build and maintain beautifully simple mobile CI.
+In this article I'm going to demonstrate some simple tips and tricks which will help you build and maintain beautifully simple mobile build pipelines.
 
 These techniques can be applied to different mobile app technologies and integrated into almost any build system. To demonstrate this, each tip is demonstrated in a React Native, Cordova (Ionic 2), Pure Native and Xamarin App, for both iOS and Android.
 
-1. [The Challenges of Mobile App CI](#The-Challenges-of-Mobile-App-CI)
-0. [Tip 1 - Embrace Makefiles for Consistency](#Embrace-Makefiles-for-Consistency)
-0. [Tip 2 - Control Version Numbers with a 'Touch' Command](#Tip-2---Control-Version-Numbers-with-a-'Touch'-Command)
-0. [Tip 3 - Control App Icons with a 'Label' Command](#Tip-3---Control-App-Icons-with-a-'Label'-Command)
-0. [Tip 4 - Support Configurable App Ids](#Tip-4---Support-Configurable-App-Ids)
-0. [Tip 5 - Document, Document, Document](#Tip-5---Document,-Document,-Document)
+1. [The Challenges of Mobile App CI](#TheChallengesOfMobileAppCI)
+0. [Tip 1 - Embrace Makefiles for Consistency](#Tip1EmbraceMakefilesForConsistency)
+0. [Tip 2 - Control Version Numbers with a 'Touch' Command](#Tip2ControlVersionNumbersWithATouchCommand)
+0. [Tip 3 - Control App Icons with a 'Label' Command](#Tip3ControlAppIconsWithALabelCommand)
+0. [Tip 4 - Support Configurable App Ids](#Tip4SupportConfigurableAppIds)
+0. [Tip 5 - Document, Document, Document](#Tip5DocumentDocumentDocument)
 0. [Conclusion](#/conclusion)
 
 ## The Challenges of Mobile App CI
@@ -58,7 +58,7 @@ test:
 build:
     # Create the apk, copy to artifacts.
     cd android && ./gradlew assembleRelease && cd ..
-    cp -f ./android/app/build/outputs/apk/myapp-release.apk ./artifacts
+    cp -f ./android/app/build/outputs/apk/myapp.apk ./artifacts
 
     # Create the ipa, copy to artifacts.
     cd ./ios; fastlane gym --scheme "app" --codesigning_identity "$(CODE_SIGNING_IDENTITY)"; cd ../;
@@ -68,16 +68,16 @@ deploy:
     # Push to TestFairy.
     curl https://app.testfairy.com/api/upload \
         -F api_key='$(API_KEY)' \
-        -F "file=@./artifacts/app-release.apk"
+        -F "file=@./artifacts/myapp.apk"
 ```
 
 This is a slightly shortened snippet, you can see a working example here:
 
 [github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app)
 
-The example above example demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy.
+The example above demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy.
 
-The nice feature is that the meat of the logic is in the main repo, in the `makefile` - the CI tool simply orchestrates it. Developers can run exactly the same commands on their local machine.
+The nice feature is that the bulk of the logic is in the main repo source, in the `makefile` - the CI tool simply orchestrates it. Developers can run *exactly* the same commands on their local machine.
 
 The [`README.md`](https://github.com/dwmkerr/beautifully-simple-app-ci/blob/master/1_react_native_app/README.md) immediately draws attention to the makefile commands:
 
@@ -106,7 +106,7 @@ deployment:
       - make deploy-android
 ```
 
-Our commands are android specific at this stage as Circle don't support iOS builds on their free plan, however I've successfully used this approach to build Android *and* iOS from the same OSX build agent on their paid plan on a number of projects.
+Our commands are android specific at this stage as Circle don't support iOS builds on their free plan[^1]. Later samples which use other build systems demonstrate Android *and* iOS.
 
 The CI automatically tests and builds whenever we have new code commits:
 
@@ -158,20 +158,15 @@ touch:
 
 Notice we don't really need complex tools for a job like this, `sed` is sufficient to quickly make changes to config files.
 
-This works very nicely with build systems, many of which provide a build number as an environment variable. For example, we can add a build number with CircleCI like so:
+This works very nicely with build systems, many of which provide a build number as an environment variable. For example, we can add a build number with TravisCI like so:
 
 ```
-# Turn our CircleCI specific build number environment variable into
-# a plain old build number, used in the makefile.
-machine:
-    BUILD_NUM: $CIRCLE_BUILD_NUM
-
-# When we test, touch the versions, run the tests, then build.
-test:
-    override:
-      - make touch
-      - make test
-      - make build
+env:
+  - BUILD_NUM=$TRAVIS_BUILD_NUMBER
+script:
+  - make touch
+  - make test
+  - make build-android
 ```
 
 A working example is available at:
@@ -184,6 +179,7 @@ This sample will always set the build number in both apps and the build version 
 $ npm version minor              # Bump the version
 v0.1.0
 $ BUILD_NUM=3 make deploy        # Push the code
+$ VERSION=1.0.2 make deploy      # Set a specific version and push
 ...
 done
 ```
@@ -192,15 +188,7 @@ And all of the version numbers and build numbers are updated and the apps are de
 
 ![Screenshot of the newly versioned apps in HockeyApp](/content/images/2017/03/6-hockey-app.png)
 
-This build also runs on CircleCI, so only builds the Android version. You can clone the code and build the iOS version (and deploy it) using the makefile.
-
-By using a variable with a default value for the version (defined for example like this: `VERSION ?= $(shell cat package.json | jq --raw-output .version)`) we can set the version to any arbitrary value with ease:
-
-```
-make touch VERSION=0.1.2            # Makefile variable syntax
-VERSION=3.4.5 make touch            # Environment variable (inline)
-export VERSION=6.7.8 && make touch  #
-```
+This build runs on TravisCI, so only builds the Android version. You can clone the code and build the iOS version (and deploy it) using the makefile.
 
 **In Summary**
 
@@ -213,10 +201,13 @@ When you are working in a larger team, it can be very useful to label your app i
 
 You might label your icons with build numbers, SHAs, branch names, versions, tags, or even something custom such as 'QA' or 'UAT' for different versions of your app. Here are a few examples:
 
-TODO Screenshot of each sample app, one labeled with version
-![Labelled Icons Screenshot](TODO)
+![Labelled Icons Screenshot](/content/images/2017/04/8-framed-labelled-icons.png)
 
-I've found this to be very useful, so created a command-line tool called '[app-icon](github.com/dwmkerr/app-icon)' to help with the task. There is a `label` command to add a label, and a `generate` command to generate icons of all different sizes. This means you can add recipes like this to your `makefile`:
+I've found this to be very useful, so created a command-line tool called '[app-icon](github.com/dwmkerr/app-icon)' to help with the task:
+
+[github.com/dwmkerr/app-icon](https://github.com/dwmkerr/app-icon)
+
+This tool has a `label` command to add a label, and a `generate` command to generate icons of all different sizes. This means you can add recipes like this to your `makefile`:
 
 ```
 VERSION ?= $(shell cat package.json | jq --raw-output .version)
@@ -320,7 +311,14 @@ Most of these tips are fairly explicit, there are detailed examples in the sampl
 
 - Developers should be able to run all of the key CI steps on their local machine, to be able to understand, adapt and improve the process
 - When building more complex features, we should create small, simple units of work which can be composed into larger pipelines
-- Complexity, if needed, should be in in code - not in 'black box' CI tools (such as esoteric features for specific CI providers or Jenkins plugins)
+- Complexity, if needed, should be in in code - not in 'black box' CI tools (such as esoteric features for specific CI providers or Jenkins plugins). For example, CircleCI offers a Git Short SHA environment variable - but you can grab a short SHA with `git log -1 --format="%h"`, and the second approach works anywhere
 - Use CI platforms to *orchestrate* work, use makefiles and scripts to handle logic
 
 I hope this article has been useful, any thoughts or comments are always welcome!
+
+---
+
+
+**Footnotes**
+
+1: I have successfully used this approach to build Android *and* iOS from the same OSX build agent on their paid plan on a number of projects. The most straightforward way to do this is to have a single build run on OSX and create the Android app as well as the iOS app.
