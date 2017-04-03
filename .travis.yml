@@ -34,10 +34,10 @@ script:
   - make label
   - make build-android
 
-# Deploy master.
-deploy:
-  skip_cleanup: true # Don't reset the working directory!
-  provider: script
-  script: make deploy-android
-  on:
-    branch: master
+# Deploy master. Disabled until I can figure out what is wrong with TravisCI (build logs currently not showing)
+#deploy:
+#  skip_cleanup: true # Don't reset the working directory!
+#  provider: script
+#  script: make deploy-android
+#  on:
+#    branch: master
