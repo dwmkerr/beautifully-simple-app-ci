@@ -12,28 +12,18 @@ if [ "$(uname)" == "Darwin" ]; then
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	brew install imagemagick
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-	# OSX - install ImageMagick.
-    sudo apt-get install imagemagick
+	# OSX - install ImageMagick, using BuddyBuild password to elevate.
+    echo password | sudo -S apt-get install imagemagick
 fi
 
-# Install Node 6.
+# Install Node 6. Required for labelling.
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm install 6
 nvm use 6
 
-# Try some more installation approaches.
-
-# Install the dependencies.
-# brew install imagemagick
-# curl https://www.imagemagick.org/download/binaries/ImageMagick-x86_64-apple-darwin16.4.0.tar.gz | tar xvz
-# export MAGICK_HOME="$PWD/ImageMagick-x86_64-apple-darwin16.4.0"
-# export PATH="$MAGICK_HOME/bin:$PATH"
-# export DYLD_LIBRARY_PATH="$MAGICK_HOME/lib/"
-
-
 # Label the app.
 cd 3_native_app
 npm install
-BUILD_NUM=BUDDYBUILD_BUILD_NUMBER make label
+BUILD_NUM=$BUDDYBUILD_BUILD_NUMBER make label
