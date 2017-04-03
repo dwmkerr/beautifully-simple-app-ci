@@ -7,8 +7,8 @@ rm -rf 2_ionic_app/
 rm -rf 4_xamarinapp/
 
 # Try some more installation approaches.
-sudo port install ImageMagick
-sudo brew install imagemagick
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install imagemagick
 
 # Install the dependencies.
 # brew install imagemagick
