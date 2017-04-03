@@ -29,7 +29,6 @@ install:
 
 # Run the Android build.
 script:
-  - cd 2_ionic_app
   - make touch
   - make test
   - make label
