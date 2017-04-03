@@ -36,6 +36,7 @@ script:
 
 # Deploy master.
 deploy:
+  skip_cleanup: true # Don't reset the working directory!
   provider: script
   script: make deploy-android
   on:
