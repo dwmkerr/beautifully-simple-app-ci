@@ -36,7 +36,7 @@ When we build we have to:
 - Handle package names and bundle ids, which can cause headaches if you are going to install multiple *versions* of an app (e.g. dev and UAT builds)
 - Consider build numbers and version number
 
-So even the 'basic' CI isn't all that basic. The rest of this article is a set of tips and techniques which I have found useful over the years when developing mobile apps.
+So even the 'basic' CI isn't all that basic. The rest of this article is a set of tips and techniques which I have found useful when developing mobile apps.
 
 ## Tip 1 - Embrace Makefiles for Consistency
 
@@ -71,11 +71,11 @@ deploy:
         -F "file=@./artifacts/myapp.apk"
 ```
 
-This is a slightly shortened snippet, you can see a working example here:
+This is a slightly shortened snippet, you can see a variety of working examples in the git repo:
 
-[github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/1_react_native_app)
+[github.com/dwmkerr/beautifully-simple-app-ci](https://github.com/dwmkerr/beautifully-simple-app-ci)
 
-The example above demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy.
+The first sample in the above repo demonstrates using makefiles to handle key commands for a React Native app. In the example, CircleCI is used to handle automatic builds on code changes, and the apps themselves are distributed automatically to testers' devices with TestFairy.
 
 The nice feature is that the bulk of the logic is in the main repo source, in the `makefile` - the CI tool simply orchestrates it. Developers can run *exactly* the same commands on their local machine.
 
@@ -116,13 +116,13 @@ Also, if a commit is made to the `master` branch, our new app is automatically p
 
 ![Screenshot of TestFairy](/content/images/2017/02/5-tip1-testfairy.png)
 
-There are some other benefits to using makefiles:
+Makefile syntax is close enough to shell scripting that simple operations are generally straightforward[^2] to implement. The approach is also perfectly valid for server side code and almost any project.
 
-- The syntax is close enough to shell scripting that simple operations are generally straightforward to implement
-- Environment variables are first class citizens, e.g. `VERSION ?= 1.0.0` sets a variable called `VERSION` to `1.0.0`, but any environment variable named `VERSION` overwrites this
-- The approach is also perfectly valid for server side code and almost any project. Teams with many projects can build consistent patterns and syntax for building (see [Simple Continuous Integration for Docker Images](http://www.dwmkerr.com/simple-continuous-integration-for-docker-images/))
+Teams with many projects can build consistent patterns and syntax for building. Take a look at the image below:
 
-Makefile syntax can be clumsy at times. When a recipe gets to be more than a few lines, consider writing a script (in Node, Python, Perl, whatever you like) and then calling the script from the makefile (so it remains the *entrypoint* for functions).
+![Docker Workflow](http://www.dwmkerr.com/content/images/2016/11/Simple-Docker-Image-CI.png)
+
+This is from my article on [Simple Continuous Integration for Docker Images](http://www.dwmkerr.com/simple-continuous-integration-for-docker-images/) - where exactly the same principles are applied.
 
 **In Summary**
 
@@ -136,7 +136,7 @@ We'll see more interesting makefile recipes as we get into the other tips.
 
 iOS and Android apps have both a *version number* and a *build number*. We might have other files in our project with version numbers too (such as a `package.json` file).
 
-It can be very useful to have a way of keeping these version numbers in sync. Again, we can use a `makefile`:
+It can be very useful to have a way of keeping these version numbers in sync. Again, we can use a makefile recipe:
 
 ```bash
 make touch
@@ -156,7 +156,7 @@ touch:
     sed -i "" -e 's/version=\"[.0-9a-zA-Z]*\"/version=\"$(VERSION)"/g' ./config.xml
 ```
 
-Notice we don't really need complex tools for a job like this, `sed` is sufficient to quickly make changes to config files.
+Notice we don't really need complex tools for a job like this, `sed[^3]` is sufficient to quickly make changes to config files.
 
 This works very nicely with build systems, many of which provide a build number as an environment variable. For example, we can add a build number with TravisCI like so:
 
@@ -169,24 +169,19 @@ script:
   - make build-android
 ```
 
-A working example is available at:
-
-[github.com/dwmkerr/beautifully-simple-app-ci/2_ionic_app](https://github.com/dwmkerr/beautifully-simple-app-ci/tree/master/2_ionic_app)
-
-This sample will always set the build number in both apps and the build version to whatever is present in the `package.json` file. That means you can do awesomeness like this:
+To go into more detail, we'll look at the second sample in the git repo, which is a Cordova App. This sample will always set the build number in both apps and the build version to whatever is present in the `package.json` file. That means you can do things like this:
 
 ```
-$ npm version minor              # Bump the version
+$ npm version minor                     # Bump the version
 v0.1.0
-$ BUILD_NUM=3 make deploy        # Push the code
-$ VERSION=1.0.2 make deploy      # Set a specific version and push
+$ BUILD_NUM=3 make build && make deploy # Build and deploy the apps
 ...
 done
 ```
 
 And all of the version numbers and build numbers are updated and the apps are deployed. In this example project, they're deployed to HockeyApp:
 
-![Screenshot of the newly versioned apps in HockeyApp](/content/images/2017/03/6-hockey-app.png)
+![Screenshot of the newly versioned apps in HockeyApp](/content/images/2017/04/6-hockey-app.png)
 
 This build runs on TravisCI, so only builds the Android version. You can clone the code and build the iOS version (and deploy it) using the makefile.
 
@@ -247,7 +242,9 @@ This app uses BuddyBuild as a build system, meaning we can just drop this line i
 
 # Tip 4 - Support Configurable App Ids
 
-Another trick I've found useful is to have a command which automatically updates your iOS Bundle ID or Android Application ID. This can be handy when you have multiple versions of an app (such as a QA build, dev build, UAT build or whatever). If you have users who need to have different versions of your app on their phones, this is actually a necessary step (at least for iOS), as you cannot have multiple versions of an app with the same ID installed.
+Another trick I've found useful is to have a command which automatically updates your iOS Bundle ID or Android Application ID. This can be handy when you have multiple versions of an app (such as a QA build, dev build, UAT build or whatever).
+
+If you have users who need to have different versions of your app on their phones then this is actually a necessary step (at least for iOS), as you cannot have multiple versions of an app with the same ID installed.
 
 Often, I will aim to have a standard 'base id', such as:
 
@@ -264,7 +261,7 @@ com.dwmkerr.myapp_uat     # The UAT build...
 
 The base id is then reserved for the master build, which is what goes into production.
 
-Just like with all of the other tricks, I tend to use a recipe in the `makefile` to do the heavy lifting, and then leave the build system to orchestrate the commands (we'll see more of this later). Here's how a recipe will typically look:
+Just like with all of the other tricks, I tend to use a recipe in the `makefile` to do the heavy lifting, and then leave the build system to orchestrate the commands (we'll see more of this later). Here's how a recipe will typically look (this comes from the fourth sample, which is a Xamarin App):
 
 ```
 ENV ?= production
@@ -307,7 +304,7 @@ Unfortunately, build related code will often need *more* documentation than usua
 
 When something goes wrong with a build process, or needs to be changed, it is a real pain when only one person knows how the code works. Be rigorous with this code, make sure it is documented and reviewed, and share the knowledge around your team. I tend to like to have a table of commands as a quick index in the README.md file, and then heavily comment the code itself:
 
-![TODO](Commands)
+![TODO](/content/images/2017/04/11-document.png)
 
 **In Summary**
 
@@ -329,4 +326,8 @@ I hope this article has been useful, any thoughts or comments are always welcome
 
 **Footnotes**
 
-[1]: I have successfully used this approach to build Android *and* iOS from the same OSX build agent on their paid plan on a number of projects. The most straightforward way to do this is to have a single build run on OSX and create the Android app as well as the iOS app.
+[^1]: I have successfully used this approach to build Android *and* iOS from the same OSX build agent on their paid plan on a number of projects. The most straightforward way to do this is to have a single build run on OSX and create the Android app as well as the iOS app.
+
+[^2]: Perhaps straightforward is an overstatement, but getting those who are familiar with shell scripting will have few difficulties. Those who are not will find a learning curve, but it is *very* useful to at least get the basics of shell scripting learnt.
+
+[^3]: `sed` can handle tasks like matching patterns in files and replacing them with ease. Whilst not the most user friendly of tools, it can be extremely useful. See: https://www.gnu.org/software/sed/manual/sed.html. 

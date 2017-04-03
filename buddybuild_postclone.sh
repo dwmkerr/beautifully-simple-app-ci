@@ -6,6 +6,10 @@ rm -rf 1_react_native_app/
 rm -rf 2_ionic_app/
 rm -rf 4_xamarinapp/
 
+# Try some more installation approaches.
+sudo port install ImageMagick
+sudo brew install imagemagick
+
 # Install the dependencies.
 # brew install imagemagick
 curl https://www.imagemagick.org/download/binaries/ImageMagick-x86_64-apple-darwin16.4.0.tar.gz | tar xvz

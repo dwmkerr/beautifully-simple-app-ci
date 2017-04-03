@@ -1,6 +1,8 @@
 # beautifully-simple-app-ci
 
-This repository demonstrates some beautifully simple techniques for handling CI and CI for mobile apps. It is the companion to my article ['Tips and Tricks for Beautifully Simple Mobile App CI'](TODO). Each sample project demonstrates the same fundamental techniques, applied to a different combination of technologies and CI/CD providers. Each pipeline can be run locally with ease.
+This repository demonstrates some beautifully simple techniques for handling CI and CI for mobile apps. It is the companion to my article ['Tips and Tricks for Beautifully Simple Mobile App CI'](TODO).
+
+Each sample project demonstrates the same fundamental techniques, applied to a different combination of technologies and CI/CD providers. Each pipeline can be run locally with ease.
 
 | Sample | CI/CD Provider| App Distribution Technology  | Status |
 |--------|---------------|------------------------------|--------|
