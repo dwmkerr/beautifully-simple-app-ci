@@ -13,6 +13,12 @@ Each sample project demonstrates the same fundamental techniques, applied to a d
 
 ## The Commands
 
+There is a project wide `makefile` to quickly build everything:
+
+| Command | Notes |
+|---------|--------|
+| `make build` | Builds all apps to the `artifacts` folder. |
+
 Here are each of the commands for each of the projects:
 
 **The React Native App**

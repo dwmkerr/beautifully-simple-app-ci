@@ -233,7 +233,9 @@ BUILD_NUM=BUDDYBUILD_BUILD_NUMBER make label
 
 This app uses BuddyBuild as a build system, meaning we can just drop this line in the [`buddybuild_postclone.sh`](./buddybuild_postclone.sh) script. You can see the labeled icons directly in the BuddyBuild UI:
 
-![TODO](BuddyBuild icons)
+![BuddyBuild Icons](/content/images/2017/04/12-buddybuild-icons.png)
+
+The Android build is currently having some issues due to fonts being accessible by the labelling tool (which uses ImageMagick under the hood), with any luck this issue will be fixed soon. This seems to be an issue with the BuddyBuild ImageMagick installation rather than the labelling code itself, which is running fine on all of the other builds!
 
 **In Summary**
 
@@ -330,4 +332,4 @@ I hope this article has been useful, any thoughts or comments are always welcome
 
 [^2]: Perhaps straightforward is an overstatement, but getting those who are familiar with shell scripting will have few difficulties. Those who are not will find a learning curve, but it is *very* useful to at least get the basics of shell scripting learnt.
 
-[^3]: `sed` can handle tasks like matching patterns in files and replacing them with ease. Whilst not the most user friendly of tools, it can be extremely useful. See: https://www.gnu.org/software/sed/manual/sed.html. 
+[^3]: `sed` can handle tasks like matching patterns in files and replacing them with ease. Whilst not the most user friendly of tools, it can be extremely useful. See: https://www.gnu.org/software/sed/manual/sed.html.

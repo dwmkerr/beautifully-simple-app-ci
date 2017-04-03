@@ -14,6 +14,8 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # OSX - install ImageMagick, using BuddyBuild password to elevate.
     # echo password | sudo -S apt-get install -y imagemagick
+    echo "Checking ImageMagick version..."
+    convert -showversion
     echo "Skipping ImageMagick installation..."
 fi
 
