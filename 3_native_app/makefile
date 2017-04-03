@@ -18,3 +18,13 @@ label:
 build-android:
 	cd android && ./gradlew assembleRelease && cd ..
 	cp -f ./android/native_app/build/outputs/apk/native_app-release-unsigned.apk ./artifacts/native_app-unsigned.apk
+
+# Build the IPA to the artifacts folder.
+build-ios:
+	cd ios; \
+	xcodebuild clean -project native_app.xcodeproj -configuration Release -alltargets; \
+	xcodebuild archive -project native_app.xcodeproj -scheme native_app -archivePath build/native_app.xcarchive; \
+	xcodebuild -exportArchive -archivePath build/native_app.xcarchive -exportPath ../artifacts/native_app -exportFormat ipa;
+
+# Build both binaries.
+build: build-android build-ios
