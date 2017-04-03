@@ -13,3 +13,8 @@ label:
 	$(info Labeling icon with '$(LABEL)' and '$(BUILD_NUM)'...)
 	./node_modules/.bin/app-icon label -i base-icon.png -o icon.png --top $(LABEL) --bottom $(BUILD_NUM)
 	./node_modules/.bin/app-icon generate
+
+# Builds the APK to the artifacts folder.
+build-android:
+	cd android && ./gradlew assembleRelease && cd ..
+	cp -f ./android/native_app/build/outputs/apk/native_app-release-unsigned.apk ./artifacts/native_app-unsigned.apk

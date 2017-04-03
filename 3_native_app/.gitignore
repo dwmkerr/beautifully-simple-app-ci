@@ -3,5 +3,9 @@ node_modules/
 # The generated icon.
 icon.png
 
+# Android ignorables.
+android/.gradle
+android/build
+
 # XCode ignorables.
 ios/native_app.xcodeproj/project.xcworkspace/xcuserdata

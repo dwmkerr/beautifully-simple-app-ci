@@ -61,27 +61,27 @@ endif
 # Create for both platforms.
 build: build-android build-ios
 
-deploy-android: touch build-android
+deploy-android:
 ifndef IA_HOCKEYAPP_TOKEN
 	$(error No IA_HOCKEYAPP_TOKEN is set, cannot deploy to HockeyApp.)
 endif
 	curl https://rink.hockeyapp.net/api/2/apps/upload \
     -F "status=2" \
     -F "notify=1" \
-	-F "bundle_short_version=$(VERSION)" \
-	-F "bundle_version=$(BUILD_NUM)" \
+		-F "bundle_short_version=$(VERSION)" \
+		-F "bundle_version=$(BUILD_NUM)" \
     -F "ipa=@./artifacts/ionic_app.apk" \
     -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
 
-deploy-ios: touch build-ios
+deploy-ios:
 ifndef IA_HOCKEYAPP_TOKEN
 	$(error No IA_HOCKEYAPP_TOKEN is set, cannot deploy to HockeyApp.)
 endif
 	curl https://rink.hockeyapp.net/api/2/apps/upload \
     -F "status=2" \
     -F "notify=1" \
-	-F "bundle_short_version=$(VERSION)" \
-	-F "bundle_version=$(BUILD_NUM)" \
+		-F "bundle_short_version=$(VERSION)" \
+		-F "bundle_version=$(BUILD_NUM)" \
     -F "ipa=@./artifacts/ionic_app.ipa" \
     -H "X-HockeyAppToken: $(IA_HOCKEYAPP_TOKEN)"
 
