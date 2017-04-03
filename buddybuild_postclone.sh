@@ -13,7 +13,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install imagemagick
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# OSX - install ImageMagick, using BuddyBuild password to elevate.
-    echo password | sudo -S apt-get install imagemagick
+    echo password | sudo -S apt-get install -y imagemagick
 fi
 
 # Install Node 6. Required for labelling.
