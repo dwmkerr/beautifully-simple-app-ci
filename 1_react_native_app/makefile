@@ -14,7 +14,7 @@ label:
 # Builds the APK to the artifacts folder.
 build-android:
 	cd android && ./gradlew assembleRelease && cd ..
-	cp -f ./android/app/build/outputs/apk/app-release.apk ./artifacts
+	cp -f ./android/app/build/outputs/apk/app-release.apk ./artifacts/react_native_app.apk
 
 # Builds the IPA to the artifacts folder.
 build-ios:
@@ -36,7 +36,7 @@ endif
 	# Push the build to TestFairy.
 	curl https://app.testfairy.com/api/upload \
 		-F api_key='$(TESTFAIRY_API_KEY)' \
-		-F "file=@./artifacts/app-release.apk" \
+		-F "file=@./artifacts/react_native_app.apk" \
 		-F auto-update='on' \
 		-F metrics='cpu,network,logcat' \
 		-F options='shake'

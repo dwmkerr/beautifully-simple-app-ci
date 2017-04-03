@@ -26,11 +26,12 @@ name:
 build-android:
 	"/Library/Frameworks/Mono.framework/Commands/xbuild" "Droid/xamarinapp.Droid.csproj" "/target:PackageForAndroid" "/p:Configuration=Release"
 	mkdir -p ./artifacts
-	cp ./Droid/bin/Release/*.apk ./artifacts
+	cp ./Droid/bin/Release/com.dwmkerr.xamarinapp.apk ./artifacts/xamarin_app.apk
 
 # Creates the iOS IPA.
 build-ios:
 	"/Library/Frameworks/Mono.framework/Commands/xbuild" /p:Configuration="Release" /p:Platform="iPhone" /p:IpaPackageDir="../artifacts/" "/p:BuildIpa=true" xamarinapp.sln
+	mv ./artifacts/xamarinapp.iOS.ipa ./artifacts/xamarin_app.ipa
 
 # Creates everything.
 build: build-android build-ios
